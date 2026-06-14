@@ -5,7 +5,7 @@ import { supabase } from '../../lib/supabase';
 export default function Valider({ searchParams }: { searchParams: any }) {
   const [statut, setStatut] = useState('chargement');
   const [lot, setLot] = useState('');
-  const params = use(searchParams);
+  const params = use(searchParams) as any;
   const code = params.code;
 
   useEffect(() => {
