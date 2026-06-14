@@ -1,10 +1,10 @@
-import { writeFileSync } from 'fs';
+ } from 'fs';
 
 const code = `'use client';
 import { useState, useEffect, use } from 'react';
 import { supabase } from '../../lib/supabase';
 
-export default function Valider({ searchParams }) {
+export default function Valider({ searchParams }: { searchParams: any }) {
   const [statut, setStatut] = useState('chargement');
   const [lot, setLot] = useState('');
   const params = use(searchParams);
