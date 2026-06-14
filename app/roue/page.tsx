@@ -19,7 +19,7 @@ function genererCode() {
 export default function Roue() {
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
-  const [resultat, setResultat] = useState(null);
+  const [resultat, setResultat] = useState(null as any);
   const [codeGagnant, setCodeGagnant] = useState('');
   const [dejaJoue, setDejaJoue] = useState(false);
 
