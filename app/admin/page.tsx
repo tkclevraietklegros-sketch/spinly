@@ -1,9 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 
 export default function Admin() {
   const [codes, setCodes] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const auth = document.cookie.split(';').find(cookie => cookie.trim().startsWith('admin_auth='));
+    if (!auth) router.push('/admin/login');
+  }, []);
   const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
 
   useEffect(() => {
