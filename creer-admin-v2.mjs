@@ -1,4 +1,6 @@
-'use client';
+import { writeFileSync } from 'fs';
+
+const code = `'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
@@ -130,4 +132,7 @@ export default function Admin() {
       )}
     </div>
   );
-}
+}`;
+
+writeFileSync('app/admin/page.tsx', code);
+console.log('Fichier cree avec succes !');

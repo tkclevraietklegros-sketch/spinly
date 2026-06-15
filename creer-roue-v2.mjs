@@ -1,4 +1,6 @@
-'use client';
+import { writeFileSync } from 'fs';
+
+const code = `'use client';
 import { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { supabase } from '../../lib/supabase';
@@ -141,4 +143,7 @@ export default function Roue() {
       )}
     </div>
   );
-}
+}`;
+
+writeFileSync('app/roue/page.tsx', code);
+console.log('Fichier cree avec succes !');
