@@ -153,6 +153,16 @@ export default function Admin() {
             />
             <p style={{color:'#9ca3af',fontSize:'12px',marginTop:'4px'}}>Trouvez votre lien sur Google My Business</p>
           </div>
+          <div style={{marginBottom:'20px'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Mot de passe admin</label>
+            <input
+              type='password'
+              value={config.mot_de_passe || ''}
+              onChange={(e) => setConfig({...config, mot_de_passe: e.target.value})}
+              placeholder='Nouveau mot de passe'
+              style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'14px',boxSizing:'border-box'}}
+            />
+          </div>
           <div style={{marginBottom:'24px'}}>
             <input
               type='color'
@@ -163,7 +173,7 @@ export default function Admin() {
           </div>
           <button
             onClick={async () => {
-              await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google }).eq('id', config.id);
+              await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google, mot_de_passe: config.mot_de_passe }).eq('id', config.id);
               alert('Parametres sauvegardes !');
             }}
             style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}

@@ -1,14 +1,17 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '../../../lib/supabase';
 
 export default function Login() {
   const [mdp, setMdp] = useState('');
   const [erreur, setErreur] = useState(false);
   const router = useRouter();
 
-  const valider = () => {
-    if (mdp === 'admin1234') {
+  const valider = async () => {
+    const { data } = await supabase.from('config').select('mot_de_passe').single();
+    const motDePasse = data?.mot_de_passe || 'admin1234';
+    if (mdp === motDePasse) {
       document.cookie = 'admin_auth=1; path=/; max-age=86400';
       router.push('/admin');
     } else {
