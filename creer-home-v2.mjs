@@ -1,4 +1,6 @@
-'use client';
+import { writeFileSync } from 'fs';
+
+const code = `'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
@@ -33,4 +35,7 @@ export default function Home() {
       </div>
     </div>
   );
-}
+}`;
+
+writeFileSync('app/page.tsx', code);
+console.log('Fichier cree avec succes !');

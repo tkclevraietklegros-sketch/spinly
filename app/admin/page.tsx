@@ -8,6 +8,7 @@ export default function Admin() {
   const [lots, setLots] = useState([]);
   const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
   const [onglet, setOnglet] = useState('stats');
+  const [config, setConfig] = useState({ nom: '', couleur_principale: '#f97316' });
   const router = useRouter();
 
   useEffect(() => {
@@ -19,6 +20,8 @@ export default function Admin() {
   const charger = async () => {
     const { data: codesData } = await supabase.from('codes').select('*').order('cree_le', { ascending: false }).limit(50);
     const { data: lotsData } = await supabase.from('lots').select('*').order('probabilite', { ascending: false });
+    const { data: configData } = await supabase.from('config').select('*').single();
+    if (configData) setConfig(configData);
     if (codesData) {
       setCodes(codesData);
       setStats({
@@ -56,6 +59,7 @@ export default function Admin() {
         <button onClick={() => setOnglet('stats')} style={{padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',background:onglet==='stats'?'#f97316':'white',color:onglet==='stats'?'white':'#6b7280',fontWeight:'bold'}}>Stats</button>
         <button onClick={() => setOnglet('lots')} style={{padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',background:onglet==='lots'?'#f97316':'white',color:onglet==='lots'?'white':'#6b7280',fontWeight:'bold'}}>Lots</button>
         <button onClick={() => setOnglet('codes')} style={{padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',background:onglet==='codes'?'#f97316':'white',color:onglet==='codes'?'white':'#6b7280',fontWeight:'bold'}}>Codes</button>
+        <button onClick={() => setOnglet('params')} style={{padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',background:onglet==='params'?'#f97316':'white',color:onglet==='params'?'white':'#6b7280',fontWeight:'bold'}}>Parametres</button>
       </div>
 
       {onglet === 'stats' && (
@@ -126,6 +130,37 @@ export default function Admin() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+    {onglet === 'params' && (
+        <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)'}}>
+          <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937',marginBottom:'24px'}}>Parametres du restaurant</h2>
+          <div style={{marginBottom:'20px'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Nom du restaurant</label>
+            <input
+              value={config.nom}
+              onChange={(e) => setConfig({...config, nom: e.target.value})}
+              style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'16px',boxSizing:'border-box'}}
+            />
+          </div>
+          <div style={{marginBottom:'24px'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Couleur principale</label>
+            <input
+              type='color'
+              value={config.couleur_principale}
+              onChange={(e) => setConfig({...config, couleur_principale: e.target.value})}
+              style={{width:'60px',height:'40px',borderRadius:'8px',border:'1px solid #e5e7eb',cursor:'pointer'}}
+            />
+          </div>
+          <button
+            onClick={async () => {
+              await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale }).eq('id', config.id);
+              alert('Parametres sauvegardes !');
+            }}
+            style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}
+          >
+            Sauvegarder
+          </button>
         </div>
       )}
     </div>
