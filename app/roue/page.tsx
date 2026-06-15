@@ -69,7 +69,7 @@ export default function Roue() {
         <div style={{background:'white',borderRadius:'24px',boxShadow:'0 10px 40px rgba(0,0,0,0.1)',padding:'32px',textAlign:'center',maxWidth:'320px'}}>
           <div style={{fontSize:'48px',marginBottom:'16px'}}>⏳</div>
           <h2 style={{fontSize:'20px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>Vous avez deja joue !</h2>
-          <p style={{color:'#6b7280'}}>Revenez dans 30 jours pour retenter votre chance</p>
+          <p style={{color:'#6b7280'}}>Revenez dans 7 jours pour retenter votre chance</p>
         </div>
       ) : (
         <div>
