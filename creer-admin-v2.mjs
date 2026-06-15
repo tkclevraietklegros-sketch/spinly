@@ -10,6 +10,7 @@ export default function Admin() {
   const [lots, setLots] = useState([]);
   const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
   const [onglet, setOnglet] = useState('stats');
+  const [periode, setPeriode] = useState('mois');
   const [config, setConfig] = useState({ nom: '', couleur_principale: '#f97316' });
   const router = useRouter();
 
@@ -19,8 +20,18 @@ export default function Admin() {
     charger();
   }, []);
 
-  const charger = async () => {
-    const { data: codesData } = await supabase.from('codes').select('*').order('cree_le', { ascending: false }).limit(50);
+  const charger = async (p = periode) => {
+    let query = supabase.from('codes').select('*').order('cree_le', { ascending: false });
+    if (p === 'semaine') {
+      const debut = new Date();
+      debut.setDate(debut.getDate() - 7);
+      query = query.gte('cree_le', debut.toISOString());
+    } else if (p === 'mois') {
+      const debut = new Date();
+      debut.setMonth(debut.getMonth() - 1);
+      query = query.gte('cree_le', debut.toISOString());
+    }
+    const { data: codesData } = await query.limit(50);
     const { data: lotsData } = await supabase.from('lots').select('*').order('probabilite', { ascending: false });
     const { data: configData } = await supabase.from('config').select('*').single();
     if (configData) setConfig(configData);
@@ -65,18 +76,25 @@ export default function Admin() {
       </div>
 
       {onglet === 'stats' && (
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'16px'}}>
-          <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-            <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total participations</p>
-            <p style={{fontSize:'36px',fontWeight:'bold',color:'#1f2937'}}>{stats.total}</p>
+        <div>
+          <div style={{display:'flex',gap:'8px',marginBottom:'16px'}}>
+            <button onClick={() => { setPeriode('semaine'); charger('semaine'); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='semaine'?'#1f2937':'white',color:periode==='semaine'?'white':'#6b7280',fontWeight:'bold'}}>Cette semaine</button>
+            <button onClick={() => { setPeriode('mois'); charger('mois'); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='mois'?'#1f2937':'white',color:periode==='mois'?'white':'#6b7280',fontWeight:'bold'}}>Ce mois</button>
+            <button onClick={() => { setPeriode('tout'); charger('tout'); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='tout'?'#1f2937':'white',color:periode==='tout'?'white':'#6b7280',fontWeight:'bold'}}>Tout</button>
           </div>
-          <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-            <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Cadeaux utilises</p>
-            <p style={{fontSize:'36px',fontWeight:'bold',color:'#16a34a'}}>{stats.utilises}</p>
-          </div>
-          <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-            <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Codes expires</p>
-            <p style={{fontSize:'36px',fontWeight:'bold',color:'#dc2626'}}>{stats.expires}</p>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'16px'}}>
+            <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total participations</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#1f2937'}}>{stats.total}</p>
+            </div>
+            <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Cadeaux utilises</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#16a34a'}}>{stats.utilises}</p>
+            </div>
+            <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Codes expires</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#dc2626'}}>{stats.expires}</p>
+            </div>
           </div>
         </div>
       )}
@@ -134,7 +152,8 @@ export default function Admin() {
           </table>
         </div>
       )}
-    {onglet === 'params' && (
+
+      {onglet === 'params' && (
         <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)'}}>
           <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937',marginBottom:'24px'}}>Parametres du restaurant</h2>
           <div style={{marginBottom:'20px'}}>
@@ -166,6 +185,7 @@ export default function Admin() {
             />
           </div>
           <div style={{marginBottom:'24px'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Couleur principale</label>
             <input
               type='color'
               value={config.couleur_principale}
