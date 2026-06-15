@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { supabase } from '../../lib/supabase';
+import confetti from 'canvas-confetti';
 
 function genererCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -52,6 +53,7 @@ export default function Roue() {
       setResultat(lot);
       const estGagnant = !lot.label.toLowerCase().includes('tentez');
       if (estGagnant) {
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         const nouveau = genererCode();
         setCodeGagnant(nouveau);
         const expiration = new Date(Date.now() + 60 * 60 * 1000);
