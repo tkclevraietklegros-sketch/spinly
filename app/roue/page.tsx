@@ -48,7 +48,7 @@ export default function Roue() {
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString() });
       }
       const cookieExp = new Date();
-      cookieExp.setDate(cookieExp.getDate() + 30);
+      cookieExp.setDate(cookieExp.getDate() + 7);
       document.cookie = 'roue_joue=1; expires=' + cookieExp.toUTCString() + '; path=/';
       setDejaJoue(true);
       setTourne(false);

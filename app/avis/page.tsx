@@ -1,7 +1,7 @@
 ﻿"use client";
 import { useState, useEffect } from "react";
 export default function Avis() {
-  const [timer, setTimer] = useState(90);
+  const [timer, setTimer] = useState(30);
   const [peutJouer, setPeutJouer] = useState(false);
   const [avisOuvert, setAvisOuvert] = useState(false);
   useEffect(() => {
