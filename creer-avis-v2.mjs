@@ -1,4 +1,6 @@
-"use client";
+import { writeFileSync } from 'fs';
+
+const code = `"use client";
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 
@@ -40,7 +42,7 @@ export default function Avis() {
             <div style={{width:'48px',height:'48px',border:'5px solid #f3f4f6',borderTop:'5px solid #f97316',borderRadius:'50%',animation:'spin 1s linear infinite',margin:'0 auto 16px'}}></div>
             <p style={{color:'#6b7280',fontWeight:'500'}}>Verification de votre avis en cours...</p>
             <p style={{color:'#9ca3af',fontSize:'13px',marginTop:'8px'}}>Merci de patienter quelques instants</p>
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <style>{\`@keyframes spin { to { transform: rotate(360deg); } }\`}</style>
           </div>
         ) : (
           <a href='/roue' style={{display:'block',background:'#f97316',color:'white',fontWeight:'bold',padding:'16px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none'}}>Tourner la roue !</a>
@@ -48,4 +50,7 @@ export default function Avis() {
       </div>
     </div>
   );
-}
+}`;
+
+writeFileSync('app/avis/page.tsx', code);
+console.log('Fichier cree avec succes !');

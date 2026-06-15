@@ -145,8 +145,17 @@ export default function Admin() {
               style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'16px',boxSizing:'border-box'}}
             />
           </div>
+          <div style={{marginBottom:'20px'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Lien Google Avis</label>
+            <input
+              value={config.lien_google || ''}
+              onChange={(e) => setConfig({...config, lien_google: e.target.value})}
+              placeholder='https://search.google.com/local/writereview?placeid=...'
+              style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'14px',boxSizing:'border-box'}}
+            />
+            <p style={{color:'#9ca3af',fontSize:'12px',marginTop:'4px'}}>Trouvez votre lien sur Google My Business</p>
+          </div>
           <div style={{marginBottom:'24px'}}>
-            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Couleur principale</label>
             <input
               type='color'
               value={config.couleur_principale}
@@ -156,7 +165,7 @@ export default function Admin() {
           </div>
           <button
             onClick={async () => {
-              await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale }).eq('id', config.id);
+              await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google }).eq('id', config.id);
               alert('Parametres sauvegardes !');
             }}
             style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}
