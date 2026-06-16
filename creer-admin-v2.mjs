@@ -47,26 +47,26 @@ export default function Admin() {
     if (lotsData) setLots(lotsData);
   };
 
-  const modifierProba = async (id, valeur) => {
+  const modifierProba = async (id: string, valeur: string) => {
     await supabase.from('lots').update({ probabilite: parseInt(valeur) }).eq('id', id);
     setConfirmation('Probabilite mise a jour !');
     setTimeout(() => setConfirmation(''), 2000);
     charger();
   };
 
-  const modifierLabel = async (id, valeur) => {
+ const modifierLabel = async (id: string, valeur: string) => {
     await supabase.from('lots').update({ label: valeur }).eq('id', id);
     setConfirmation('Nom mis a jour !');
     setTimeout(() => setConfirmation(''), 2000);
     charger();
   };
 
-  const toggleActif = async (id, actif) => {
+  const toggleActif = async (id: string, actif: boolean) => {
     await supabase.from('lots').update({ actif: !actif }).eq('id', id);
     charger();
   };
 
-  const supprimerCode = async (id) => {
+  const supprimerCode = async (id: string) => {
     if (!confirm('Supprimer ce code ?')) return;
     await supabase.from('codes').delete().eq('id', id);
     charger();
