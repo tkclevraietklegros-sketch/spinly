@@ -19,7 +19,7 @@ function choisirLot(lots: any[]) {
 }
 
 export default function Roue() {
-  const [lots, setLots] = useState([]);
+  const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
   const [resultat, setResultat] = useState(null);
