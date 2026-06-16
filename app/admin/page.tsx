@@ -167,7 +167,7 @@ export default function Admin() {
                   </td>
                   <td style={{padding:'12px 8px',color:'#6b7280',fontSize:'13px'}}>{new Date(c.cree_le).toLocaleString('fr-FR')}</td>
                   <td style={{padding:'12px 8px'}}>
-                   <button onClick={() => supprimerCode(c.id)} style={{padding:'4px 6px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'11px',fontWeight:'bold'}}>Sup</button>
+                   <button onClick={() => supprimerCode(c.id)} style={{padding:'6px 8px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'16px'}}>🗑</button>
                   </td>
                 </tr>
               ))}
