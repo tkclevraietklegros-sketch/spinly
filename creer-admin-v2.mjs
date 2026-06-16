@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 
 export default function Admin() {
-  const [codes, setCodes] = useState([]);
-  const [lots, setLots] = useState([]);
+  const [codes, setCodes] = useState<any[]>([]);
+  const [lots, setLots] = useState<any[]>([]);
   const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
   const [onglet, setOnglet] = useState('stats');
   const [periode, setPeriode] = useState('mois');
