@@ -8,7 +8,7 @@ function genererCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-function choisirLot(lots) {
+function choisirLot(lots: any[]) {
   const total = lots.reduce((acc, l) => acc + l.probabilite, 0);
   let rand = Math.floor(Math.random() * total);
   for (const lot of lots) {
