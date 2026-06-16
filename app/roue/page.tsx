@@ -22,7 +22,7 @@ export default function Roue() {
   const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
-  const [resultat, setResultat] = useState(null);
+  const [resultat, setResultat] = useState<any>(null);
   const [codeGagnant, setCodeGagnant] = useState('');
   const [dejaJoue, setDejaJoue] = useState(false);
   const [chargement, setChargement] = useState(true);
