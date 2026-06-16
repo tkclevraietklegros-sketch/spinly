@@ -123,7 +123,7 @@ export default function Admin() {
           <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total probabilites : {lots.reduce((a,l) => a+l.probabilite, 0)}</p>
           <p style={{color:'#9ca3af',fontSize:'13px',marginBottom:'16px',background:'#f9fafb',padding:'10px',borderRadius:'8px'}}>Info : Les probabilites fonctionnent en pourcentage. Si le total fait 100, chaque chiffre est directement un %. Ex : Cafe = 10 signifie 10% de chance de gagner un cafe.</p>
           {lots.map((lot) => (
-            <div key={lot.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px',borderBottom:'1px solid #f3f4f6'}}>
+            <div key={lot.id} style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:'8px',padding:'12px',borderBottom:'1px solid #f3f4f6'}}>
               <div style={{width:'16px',height:'16px',borderRadius:'50%',background:lot.couleur,flexShrink:0}}></div>
               <input defaultValue={lot.label} onBlur={(e) => modifierLabel(lot.id, e.target.value)} style={{flex:1,padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
@@ -141,7 +141,7 @@ export default function Admin() {
       {onglet === 'codes' && (
         <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)'}}>
           <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937',marginBottom:'16px'}}>Derniers codes</h2>
-          <table style={{width:'100%',borderCollapse:'collapse'}}>
+          <table style={{width:'100%',borderCollapse:'collapse',fontSize:'12px'}}>
             <thead>
               <tr style={{borderBottom:'2px solid #f3f4f6'}}>
                 <th style={{textAlign:'left',padding:'8px',color:'#6b7280',fontSize:'14px'}}>Code</th>
@@ -154,7 +154,7 @@ export default function Admin() {
             <tbody>
               {codes.map((c) => (
                 <tr key={c.id} style={{borderBottom:'1px solid #f3f4f6'}}>
-                  <td style={{padding:'12px 8px',fontWeight:'bold',color:'#f97316',letterSpacing:'2px'}}>{c.code}</td>
+                  <td style={{padding:'8px 4px',fontWeight:'bold',color:'#f97316',letterSpacing:'1px'}}>{c.code}</td>
                   <td style={{padding:'12px 8px',color:'#1f2937'}}>{c.lot}</td>
                   <td style={{padding:'12px 8px'}}>
                     {c.utilise ? (
