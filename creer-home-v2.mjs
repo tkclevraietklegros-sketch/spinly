@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#ffffff 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
+    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#fef3e2 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
       
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
         <div style={{fontSize:'64px',marginBottom:'12px'}}>🍽️</div>

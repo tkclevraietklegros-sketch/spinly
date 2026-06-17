@@ -38,7 +38,7 @@ export default function Avis() {
   const circonference = 283;
 
   return (
-    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#ffffff 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
+    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#fef3e2 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
       
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
         <div style={{fontSize:'48px',marginBottom:'8px'}}>&#11088;</div>
