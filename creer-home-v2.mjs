@@ -21,11 +21,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#ffffff 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
+    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#ffffff 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
       
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
         <div style={{fontSize:'64px',marginBottom:'12px'}}>🍽️</div>
-        <h1 style={{fontSize:'32px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>{config.nom}</h1>
+        <h1 style={{fontSize:'32px',fontWeight:'bold',color:config.couleur_principale,margin:'0'}}>{config.nom}</h1>
         <p style={{color:'#6b7280',marginTop:'8px',fontSize:'16px'}}>Merci de votre visite !</p>
       </div>
 
