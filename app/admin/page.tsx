@@ -31,14 +31,24 @@ export default function Admin() {
       query = query.gte('cree_le', debut.toISOString());
     }
     const { data: codesData } = await query.limit(50);
-    const { data: partData } = await supabase.from('participations').select('*');
+    let partQuery = supabase.from('participations').select('*');
+    if (p === 'semaine') {
+      const debut = new Date();
+      debut.setDate(debut.getDate() - 7);
+      partQuery = partQuery.gte('cree_le', debut.toISOString());
+    } else if (p === 'mois') {
+      const debut = new Date();
+      debut.setMonth(debut.getMonth() - 1);
+      partQuery = partQuery.gte('cree_le', debut.toISOString());
+    }
+    const { data: partData } = await partQuery;
     const { data: lotsData } = await supabase.from('lots').select('*').order('probabilite', { ascending: false });
     const { data: configData } = await supabase.from('config').select('*').single();
     if (configData) setConfig(configData);
     if (codesData) {
       setCodes(codesData);
       setStats({
-        total: codesData.length,
+        total: partData ? partData.length : 0,
         utilises: codesData.filter(c => c.utilise).length,
         expires: codesData.filter(c => c.expire_le && new Date(c.expire_le) < new Date()).length,
       });
