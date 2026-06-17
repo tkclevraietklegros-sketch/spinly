@@ -37,11 +37,13 @@ export default function Avis() {
     setAvisOuvert(true);
   };
 
+  const circonference = 283;
+
   return (
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#ffffff 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
       
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
-        <div style={{fontSize:'48px',marginBottom:'8px'}}>⭐</div>
+        <div style={{fontSize:'48px',marginBottom:'8px'}}>&#11088;</div>
         <h1 style={{fontSize:'28px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>Votre avis compte !</h1>
         <p style={{color:'#6b7280',marginTop:'8px',fontSize:'16px'}}>2 minutes pour gagner un cadeau</p>
       </div>
@@ -67,35 +69,26 @@ export default function Avis() {
               <svg viewBox="0 0 100 100" style={{width:'100px',height:'100px',transform:'rotate(-90deg)'}}>
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#f3f4f6" strokeWidth="8"/>
                 <circle cx="50" cy="50" r="45" fill="none" stroke={config.couleur_principale} strokeWidth="8"
-                  strokeDasharray={"${Math.round(2 * Math.PI * 45)}"}
-                  strokeDashoffset={"${Math.round(2 * Math.PI * 45 * secondes / 30)}"}
+                  strokeDasharray={circonference}
+                  strokeDashoffset={circonference * secondes / 30}
                   style={{transition:'stroke-dashoffset 1s linear'}}/>
               </svg>
               <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontSize:'24px',fontWeight:'bold',color:config.couleur_principale}}>{secondes}</div>
             </div>
             <p style={{color:'#1f2937',fontWeight:'600',fontSize:'16px',marginBottom:'8px'}}>Merci pour votre avis !</p>
             <p style={{color:'#6b7280',fontSize:'14px'}}>La roue sera disponible dans {secondes} secondes...</p>
-            <style>{\`@keyframes spin { to { transform: rotate(360deg); } }\`}</style>
           </div>
         ) : (
           <div>
-            <div style={{fontSize:'56px',marginBottom:'16px'}}>🎡</div>
-            <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>C'est parti !</h2>
+            <div style={{fontSize:'56px',marginBottom:'16px'}}>&#127905;</div>
+            <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>C est parti !</h2>
             <p style={{color:'#6b7280',marginBottom:'24px'}}>La roue vous attend, bonne chance !</p>
-            <a href='/roue' style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)',animation:'pulse 2s infinite'}}>
+            <a href='/roue' style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)'}}>
               Tourner la roue !
             </a>
           </div>
         )}
       </div>
-
-      <style>{\`
-        @keyframes pulse {
-          0% { transform: scale(1); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
-          50% { transform: scale(1.03); box-shadow: 0 12px 32px rgba(249,115,22,0.5); }
-          100% { transform: scale(1); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
-        }
-      \`}</style>
     </div>
   );
 }`;
