@@ -33,6 +33,7 @@ export default function Admin() {
       query = query.gte('cree_le', debut.toISOString());
     }
     const { data: codesData } = await query.limit(50);
+    const { data: partData } = await supabase.from('participations').select('*');
     const { data: lotsData } = await supabase.from('lots').select('*').order('probabilite', { ascending: false });
     const { data: configData } = await supabase.from('config').select('*').single();
     if (configData) setConfig(configData);
