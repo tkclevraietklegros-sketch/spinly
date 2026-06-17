@@ -63,18 +63,10 @@ export default function Avis() {
           </div>
         ) : !peutJouer ? (
           <div>
-            <div style={{position:'relative',width:'100px',height:'100px',margin:'0 auto 24px'}}>
-              <svg viewBox="0 0 100 100" style={{width:'100px',height:'100px',transform:'rotate(-90deg)'}}>
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#f3f4f6" strokeWidth="8"/>
-                <circle cx="50" cy="50" r="45" fill="none" stroke={config.couleur_principale} strokeWidth="8"
-                  strokeDasharray={circonference}
-                  strokeDashoffset={circonference * secondes / 30}
-                  style={{transition:'stroke-dashoffset 1s linear'}}/>
-              </svg>
-              <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontSize:'24px',fontWeight:'bold',color:config.couleur_principale}}>{secondes}</div>
-            </div>
-            <p style={{color:'#1f2937',fontWeight:'600',fontSize:'16px',marginBottom:'8px'}}>Merci pour votre avis !</p>
-            <p style={{color:'#6b7280',fontSize:'14px'}}>La roue sera disponible dans {secondes} secondes...</p>
+            <div style={{width:'56px',height:'56px',border:'5px solid #f3f4f6',borderTop:'5px solid '+config.couleur_principale,borderRadius:'50%',animation:'spin 1s linear infinite',margin:'0 auto 24px'}}></div>
+            <p style={{color:'#1f2937',fontWeight:'600',fontSize:'16px',marginBottom:'8px'}}>Verification de votre avis...</p>
+            <p style={{color:'#9ca3af',fontSize:'14px'}}>Merci de patienter quelques instants</p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         ) : (
           <div>
