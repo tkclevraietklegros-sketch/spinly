@@ -54,6 +54,7 @@ export default function Roue() {
     setTimeout(async () => {
       setResultat(lot);
       const estGagnant = !lot.label.toLowerCase().includes('tentez');
+      await supabase.from('participations').insert({ lot: lot.label });
       if (estGagnant) {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         const nouveau = genererCode();
