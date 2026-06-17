@@ -11,7 +11,7 @@ export default function Admin() {
   const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
   const [onglet, setOnglet] = useState('stats');
   const [periode, setPeriode] = useState('mois');
- const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
+  const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
   const [confirmation, setConfirmation] = useState('');
   const router = useRouter();
 
@@ -54,7 +54,7 @@ export default function Admin() {
     charger();
   };
 
- const modifierLabel = async (id: string, valeur: string) => {
+  const modifierLabel = async (id: string, valeur: string) => {
     await supabase.from('lots').update({ label: valeur }).eq('id', id);
     setConfirmation('Nom mis a jour !');
     setTimeout(() => setConfirmation(''), 2000);
@@ -69,6 +69,12 @@ export default function Admin() {
   const supprimerCode = async (id: string) => {
     if (!confirm('Supprimer ce code ?')) return;
     await supabase.from('codes').delete().eq('id', id);
+    charger();
+  };
+
+  const supprimerTout = async () => {
+    if (!confirm('Supprimer tous les codes ?')) return;
+    await supabase.from('codes').delete().neq('id','00000000-0000-0000-0000-000000000000');
     charger();
   };
 
@@ -93,24 +99,20 @@ export default function Admin() {
             <button onClick={() => { setPeriode('mois'); charger('mois'); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='mois'?'#1f2937':'white',color:periode==='mois'?'white':'#6b7280',fontWeight:'bold'}}>Ce mois</button>
             <button onClick={() => { setPeriode('tout'); charger('tout'); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='tout'?'#1f2937':'white',color:periode==='tout'?'white':'#6b7280',fontWeight:'bold'}}>Tout</button>
           </div>
-         <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px'}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px'}}>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-              <div style={{fontSize:'28px',marginBottom:'8px'}}>🎯</div>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total participations</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#1f2937'}}>{stats.total}</p>
             </div>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-              <div style={{fontSize:'28px',marginBottom:'8px'}}>🎁</div>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Cadeaux utilises</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#16a34a'}}>{stats.utilises}</p>
             </div>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-              <div style={{fontSize:'28px',marginBottom:'8px'}}>⏰</div>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Codes expires</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#dc2626'}}>{stats.expires}</p>
             </div>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
-              <div style={{fontSize:'28px',marginBottom:'8px'}}>📊</div>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Taux utilisation</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#f97316'}}>{stats.total > 0 ? Math.round(stats.utilises / stats.total * 100) : 0}%</p>
             </div>
@@ -142,7 +144,10 @@ export default function Admin() {
 
       {onglet === 'codes' && (
         <div style={{background:'white',borderRadius:'16px',padding:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',overflowX:'auto'}}>
-          <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937',marginBottom:'16px'}}>Derniers codes</h2>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+            <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937'}}>Derniers codes</h2>
+            <button onClick={supprimerTout} style={{padding:'8px 14px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'13px',fontWeight:'bold'}}>Tout supprimer</button>
+          </div>
           <table style={{width:'100%',borderCollapse:'collapse',fontSize:'12px'}}>
             <thead>
               <tr style={{borderBottom:'2px solid #f3f4f6'}}>
@@ -157,19 +162,19 @@ export default function Admin() {
               {codes.map((c) => (
                 <tr key={c.id} style={{borderBottom:'1px solid #f3f4f6'}}>
                   <td style={{padding:'8px 4px',fontWeight:'bold',color:'#f97316',letterSpacing:'1px'}}>{c.code}</td>
-                  <td style={{padding:'12px 8px',color:'#1f2937'}}>{c.lot}</td>
-                  <td style={{padding:'12px 8px'}}>
+                  <td style={{padding:'8px 4px',color:'#1f2937'}}>{c.lot}</td>
+                  <td style={{padding:'8px 4px'}}>
                     {c.utilise ? (
-                      <span style={{background:'#dcfce7',color:'#16a34a',padding:'4px 10px',borderRadius:'20px',fontSize:'13px'}}>Utilise</span>
+                      <span style={{background:'#dcfce7',color:'#16a34a',padding:'4px 8px',borderRadius:'20px',fontSize:'11px'}}>Utilise</span>
                     ) : c.expire_le && new Date(c.expire_le) < new Date() ? (
-                      <span style={{background:'#fee2e2',color:'#dc2626',padding:'4px 10px',borderRadius:'20px',fontSize:'13px'}}>Expire</span>
+                      <span style={{background:'#fee2e2',color:'#dc2626',padding:'4px 8px',borderRadius:'20px',fontSize:'11px'}}>Expire</span>
                     ) : (
-                      <span style={{background:'#fef9c3',color:'#ca8a04',padding:'4px 10px',borderRadius:'20px',fontSize:'13px'}}>En attente</span>
+                      <span style={{background:'#fef9c3',color:'#ca8a04',padding:'4px 8px',borderRadius:'20px',fontSize:'11px'}}>Attente</span>
                     )}
                   </td>
-                  <td style={{padding:'12px 8px',color:'#6b7280',fontSize:'13px'}}>{new Date(c.cree_le).toLocaleString('fr-FR')}</td>
-                  <td style={{padding:'12px 8px'}}>
-                   <button onClick={() => supprimerCode(c.id)} style={{padding:'6px 8px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'16px'}}>🗑</button>
+                  <td style={{padding:'8px 4px',color:'#6b7280',fontSize:'11px'}}>{new Date(c.cree_le).toLocaleString('fr-FR')}</td>
+                  <td style={{padding:'8px 4px'}}>
+                    <button onClick={() => supprimerCode(c.id)} style={{padding:'6px 10px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'12px',fontWeight:'bold'}}>Suppr</button>
                   </td>
                 </tr>
               ))}
