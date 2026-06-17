@@ -176,7 +176,8 @@ export default function Admin() {
         <div style={{background:'white',borderRadius:'16px',padding:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',overflowX:'auto'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
             <h2 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937'}}>Derniers codes</h2>
-            <button onClick={supprimerTout} style={{padding:'8px 14px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'13px',fontWeight:'bold'}}>Tout supprimer</button>
+            <button onClick={async () => { if (!confirm('Supprimer les codes expires ?')) return; const expires = codes.filter(c => c.expire_le && new Date(c.expire_le) < new Date() && !c.utilise); for (const c of expires) { await supabase.from('codes').delete().eq('id', c.id); } charger(); }} style={{padding:'8px 14px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fef9c3',color:'#ca8a04',fontSize:'13px',fontWeight:'bold'}}>Suppr expires</button>
+              <button onClick={supprimerTout} style={{padding:'8px 14px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'13px',fontWeight:'bold'}}>Tout supprimer</button>
           </div>
           <table style={{width:'100%',borderCollapse:'collapse',fontSize:'12px'}}>
             <thead>
