@@ -166,6 +166,7 @@ export default function Admin() {
               <button onClick={() => toggleActif(lot.id, lot.actif)} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:lot.actif?'#dcfce7':'#fee2e2',color:lot.actif?'#16a34a':'#dc2626',fontSize:'13px',fontWeight:'bold'}}>
                 {lot.actif ? 'Actif' : 'Inactif'}
               </button>
+              <button onClick={async () => { if (!confirm('Supprimer ce lot ?')) return; await supabase.from('lots').delete().eq('id', lot.id); charger(); }} style={{padding:'6px 10px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f3f4f6',color:'#6b7280',fontSize:'13px',fontWeight:'bold'}}>Suppr</button>
             </div>
           ))}
         </div>
