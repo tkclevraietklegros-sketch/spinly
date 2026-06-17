@@ -135,8 +135,7 @@ export default function Admin() {
           {confirmation && <p style={{color:'#16a34a',fontWeight:'bold',marginBottom:'12px'}}>OK {confirmation}</p>}
           <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total probabilites : {lots.reduce((a,l) => a+l.probabilite, 0)}</p>
           <p style={{color:'#9ca3af',fontSize:'13px',marginBottom:'16px',background:'#f9fafb',padding:'10px',borderRadius:'8px'}}>Info : Les probabilites fonctionnent en pourcentage. Si le total fait 100, chaque chiffre est directement un %. Ex : Cafe = 10 signifie 10% de chance de gagner un cafe.</p>
-          <div style={{display:'flex',flexWrap:'wrap',gap:'8px',padding:'16px',background:'#f9fafb',borderRadius:'12px',marginBottom:'16px',alignItems:'center'}}>
-            <input id='newLabel' placeholder='Nom du lot' style={{flex:1,minWidth:'120px',padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
+           style={{flex:1,minWidth:'120px',padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
             <input id='newCouleur' type='color' defaultValue='#f97316' style={{width:'40px',height:'36px',borderRadius:'8px',border:'1px solid #e5e7eb',cursor:'pointer'}}/>
             <input id='newProba' type='number' placeholder='Proba' defaultValue='10' style={{width:'70px',padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px',textAlign:'center'}}/>
             <button onClick={async () => {
