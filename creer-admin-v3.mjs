@@ -305,7 +305,8 @@ export default function Admin() {
               ctx.fillText(config.nom, 200, 50);
               ctx.font = '18px Arial';
               ctx.fillStyle = '#6b7280';
-              ctx.fillText('Donnez votre avis et tentez de gagner !', 200, 420);
+              ctx.fillText('Scannez le QR code !', 200, 400);
+ctx.fillText('Donnez votre avis et tentez de gagner !', 200, 430);
               ctx.font = '14px Arial';
               ctx.fillText('En seulement 2 minutes !', 200, 460);
               const qr = document.getElementById('qr-chevalet') as HTMLCanvasElement;
