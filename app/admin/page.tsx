@@ -15,7 +15,7 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
   const hauteurMax = 140;
   return (
     <div style={{position:'relative'}}>
-      <div style={{display:'flex',alignItems:'flex-end',gap:'4px',height:hauteurMax+'px',borderBottom:'2px solid #f3f4f6',paddingBottom:'0'}}>
+      <div style={{display:'flex',alignItems:'flex-end',gap:'0px',height:hauteurMax+'px',borderBottom:'2px solid #f3f4f6',paddingBottom:'0'}}>
         {jours.map((jour, i) => {
           const val = comptesParJour[jour];
           const h = max > 0 ? Math.max((val / max) * hauteurMax, 8) : 8;
