@@ -96,8 +96,13 @@ export default function Roue() {
       <p style={{color:'#6b7280',marginBottom:'24px',textAlign:'center'}}>Tentez de gagner un cadeau</p>
       {dejaJoue && !resultat ? (
         <div style={{background:'white',borderRadius:'24px',boxShadow:'0 10px 40px rgba(0,0,0,0.1)',padding:'32px',textAlign:'center',maxWidth:'320px',width:'100%'}}>
-          <h2 style={{fontSize:'20px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>Vous avez deja joue !</h2>
-          <p style={{color:'#6b7280'}}>Revenez dans 7 jours pour retenter votre chance</p>
+          <div style={{fontSize:'64px',marginBottom:'16px',animation:'bounce 1s infinite'}}>⏳</div>
+          <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>A bientot !</h2>
+          <p style={{color:'#6b7280',marginBottom:'16px',lineHeight:'1.6'}}>Vous avez deja tente votre chance lors de cette visite.</p>
+          <div style={{background:'#fff7ed',borderRadius:'12px',padding:'16px'}}>
+            <p style={{color:'#f97316',fontWeight:'bold',fontSize:'14px'}}>Revenez dans 7 jours pour retenter votre chance !</p>
+          </div>
+          <style>{`@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }`}</style>
         </div>
       ) : (
         <div style={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',maxWidth:'400px'}}>
