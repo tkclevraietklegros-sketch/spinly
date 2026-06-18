@@ -12,7 +12,11 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
     const jour = new Date(c.cree_le).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
     comptesParJour[jour] = (comptesParJour[jour] || 0) + 1;
   });
-  const jours = Object.keys(comptesParJour).slice(-14);
+  const jours = Object.keys(comptesParJour).sort((a, b) => {
+    const [da, ma] = a.split('/').map(Number);
+    const [db, mb] = b.split('/').map(Number);
+    return ma !== mb ? ma - mb : da - db;
+  }).slice(-14);
   const max = Math.max(...jours.map(j => comptesParJour[j]));
   const hauteurMax = 140;
   return (
