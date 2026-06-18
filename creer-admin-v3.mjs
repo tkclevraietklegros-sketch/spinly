@@ -5,6 +5,27 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 
+function GraphiqueBarres({ partData }: { partData: any[] }) {
+  if (!partData || partData.length === 0) return <p style={{color:'#9ca3af',textAlign:'center'}}>Pas de donnees</p>;
+  const comptesParJour: any = {};
+  partData.forEach(c => {
+    const jour = new Date(c.cree_le).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
+    comptesParJour[jour] = (comptesParJour[jour] || 0) + 1;
+  });
+  const jours = Object.keys(comptesParJour).slice(-14);
+  const max = Math.max(...jours.map(j => comptesParJour[j]));
+  return (
+    <div style={{display:'flex',alignItems:'flex-end',gap:'8px',height:'120px',padding:'0 8px'}}>
+      {jours.map((jour, i) => (
+        <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1}}>
+          <div style={{width:'100%',background:'#f97316',borderRadius:'4px 4px 0 0',height:max > 0 ? (comptesParJour[jour] / max * 100)+'px' : '4px',minHeight:'4px'}}></div>
+          <p style={{color:'#6b7280',fontSize:'9px',marginTop:'4px',textAlign:'center'}}>{jour}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Admin() {
   const [codes, setCodes] = useState<any[]>([]);
   const [lots, setLots] = useState<any[]>([]);
