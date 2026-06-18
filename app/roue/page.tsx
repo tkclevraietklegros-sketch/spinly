@@ -25,6 +25,7 @@ export default function Roue() {
   const [resultat, setResultat] = useState<any>(null);
   const [codeGagnant, setCodeGagnant] = useState('');
   const [dejaJoue, setDejaJoue] = useState(false);
+  const [nomRestaurant, setNomRestaurant] = useState('');
   const [chargement, setChargement] = useState(true);
   const [taille, setTaille] = useState(280);
 
@@ -34,6 +35,8 @@ export default function Roue() {
     const chargerLots = async () => {
       const { data } = await supabase.from('lots').select('*').eq('actif', true);
       if (data) setLots(data);
+      const { data: configData } = await supabase.from('config').select('nom').single();
+      if (configData) setNomRestaurant(configData.nom);
       setChargement(false);
     };
     chargerLots();
@@ -126,8 +129,9 @@ export default function Roue() {
             </button>
           ) : resultat && !resultat.label.toLowerCase().includes('tentez') ? (
             <div style={{background:'white',borderRadius:'24px',boxShadow:'0 10px 40px rgba(0,0,0,0.1)',padding:'24px',textAlign:'center',width:'100%'}}>
-              <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>Felicitations !</h2>
-              <p style={{fontSize:'20px',color:'#f97316',fontWeight:'bold',marginBottom:'16px'}}>{resultat.label}</p>
+              <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'4px'}}>Felicitations !</h2>
+              <p style={{fontSize:'14px',color:'#6b7280',marginBottom:'12px'}}>{nomRestaurant} vous offre...</p>
+              <p style={{fontSize:'24px',color:'#f97316',fontWeight:'bold',marginBottom:'16px'}}>{resultat.label}</p>
               <div style={{display:'flex',justifyContent:'center',marginBottom:'16px'}}>
                 <QRCodeCanvas value={urlValidation} size={160}/>
               </div>
