@@ -4,6 +4,7 @@ const code = `'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
+import { QRCodeCanvas } from 'qrcode.react';
 
 function GraphiqueBarres({ partData }: { partData: any[] }) {
   if (!partData || partData.length === 0) return <p style={{color:'#9ca3af',textAlign:'center',padding:'24px'}}>Pas encore de donnees</p>;
@@ -287,6 +288,38 @@ export default function Admin() {
           <button onClick={async () => { await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google, mot_de_passe: config.mot_de_passe }).eq('id', config.id); alert('Parametres sauvegardes !'); }} style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}>
             Sauvegarder
           </button>
+          <div style={{marginTop:'32px',paddingTop:'24px',borderTop:'1px solid #f3f4f6'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>QR Code du chevalet</label>
+            <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'16px'}}>Telechargez et imprimez ce QR code a poser sur vos tables</p>
+            <button onClick={() => {
+              const canvas = document.createElement('canvas');
+              canvas.width = 400;
+              canvas.height = 500;
+              const ctx = canvas.getContext('2d');
+              if (!ctx) return;
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, 400, 500);
+              ctx.fillStyle = '#1f2937';
+              ctx.font = 'bold 24px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText(config.nom, 200, 50);
+              ctx.font = '18px Arial';
+              ctx.fillStyle = '#6b7280';
+              ctx.fillText('Scannez pour gagner un cadeau !', 200, 450);
+              const qr = document.getElementById('qr-chevalet') as HTMLCanvasElement;
+              if (qr) ctx.drawImage(qr, 50, 80, 300, 300);
+              const link = document.createElement('a');
+              link.download = 'qr-chevalet.png';
+              link.href = canvas.toDataURL();
+              link.click();
+            }} style={{background:'#1f2937',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px',marginBottom:'16px'}}>
+              Telecharger QR Code
+            </button>
+            <div style={{display:'flex',justifyContent:'center',marginTop:'16px'}}>
+              <QRCodeCanvas id='qr-chevalet' value='https://roue-restaurant.vercel.app' size={200}/>
+            </div>
+            <div id='qr-preview' style={{display:'flex',justifyContent:'center',marginTop:'16px'}}></div>
+          </div>
         </div>
       )}
     </div>
