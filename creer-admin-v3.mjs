@@ -24,7 +24,7 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
           return (
             <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1,height:'100%',justifyContent:'flex-end'}}>
               <span style={{color:'#1f2937',fontSize:'10px',fontWeight:'bold',marginBottom:'2px'}}>{val}</span>
-              <div style={{width:'70%',background:'linear-gradient(to top,#f97316,#fb923c)',borderRadius:'4px 4px 0 0',height:h+'px'}}></div>
+              <div style={{width:'40%',maxWidth:'40px',background:'linear-gradient(to top,#f97316,#fb923c)',borderRadius:'4px 4px 0 0',height:h+'px'}}></div>
             </div>
           );
         })}
