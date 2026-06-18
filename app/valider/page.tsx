@@ -1,6 +1,4 @@
-import { writeFileSync } from 'fs';
-
-const code = `'use client';
+'use client';
 import { useState, useEffect, use } from 'react';
 import { supabase } from '../../lib/supabase';
 
@@ -39,7 +37,7 @@ export default function Valider({ searchParams }: { searchParams: any }) {
           <div>
             <div style={{width:'56px',height:'56px',border:'5px solid #f3f4f6',borderTop:'5px solid #f97316',borderRadius:'50%',animation:'spin 1s linear infinite',margin:'0 auto 24px'}}></div>
             <p style={{color:'#6b7280',fontSize:'18px'}}>Verification en cours...</p>
-            <style>{\`@keyframes spin { to { transform: rotate(360deg); } }\`}</style>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         )}
         {statut === 'valide' && (
@@ -50,34 +48,31 @@ export default function Valider({ searchParams }: { searchParams: any }) {
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'4px'}}>Cadeau a offrir</p>
               <p style={{fontSize:'24px',color:'#16a34a',fontWeight:'bold'}}>{lot}</p>
             </div>
-            <p style={{color:'#6b7280',marginBottom:'24px'}}>Offrez le cadeau au client !</p>
+            <p style={{color:'#6b7280'}}>Offrez le cadeau au client !</p>
           </div>
         )}
         {statut === 'deja_utilise' && (
           <div>
             <div style={{fontSize:'80px',marginBottom:'16px',color:'#dc2626',fontWeight:'bold'}}>X</div>
             <h1 style={{fontSize:'28px',fontWeight:'bold',color:'#dc2626',marginBottom:'12px'}}>Deja utilise !</h1>
-            <p style={{color:'#6b7280',marginBottom:'24px'}}>Ce cadeau a deja ete offert</p>
+            <p style={{color:'#6b7280'}}>Ce cadeau a deja ete offert</p>
           </div>
         )}
         {statut === 'expire' && (
           <div>
             <div style={{fontSize:'80px',marginBottom:'16px',fontWeight:'bold',color:'#f97316'}}>!</div>
             <h1 style={{fontSize:'28px',fontWeight:'bold',color:'#f97316',marginBottom:'12px'}}>Code expire !</h1>
-            <p style={{color:'#6b7280',marginBottom:'24px'}}>Ce code n est plus valable</p>
+            <p style={{color:'#6b7280'}}>Ce code n est plus valable</p>
           </div>
         )}
         {statut === 'invalide' && (
           <div>
             <div style={{fontSize:'80px',marginBottom:'16px',fontWeight:'bold',color:'#dc2626'}}>?</div>
             <h1 style={{fontSize:'28px',fontWeight:'bold',color:'#dc2626',marginBottom:'12px'}}>Code invalide !</h1>
-            <p style={{color:'#6b7280',marginBottom:'24px'}}>Ce code n existe pas</p>
+            <p style={{color:'#6b7280'}}>Ce code n existe pas</p>
           </div>
         )}
       </div>
     </div>
   );
-}`;
-
-writeFileSync('app/valider/page.tsx', code);
-console.log('Fichier cree avec succes !');
+}
