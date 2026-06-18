@@ -14,7 +14,7 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
     const [da, ma] = a.split('/').map(Number);
     const [db, mb] = b.split('/').map(Number);
     return ma !== mb ? ma - mb : da - db;
-  }).slice(-14);
+  }).slice(-30);
   const max = Math.max(...jours.map(j => comptesParJour[j]));
   const hauteurMax = 140;
   return (
