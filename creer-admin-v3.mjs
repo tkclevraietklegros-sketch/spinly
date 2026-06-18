@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 
 function GraphiqueBarres({ partData }: { partData: any[] }) {
-  if (!partData || partData.length === 0) return <p style={{color:'#9ca3af',textAlign:'center'}}>Pas de donnees</p>;
+  if (!partData || partData.length === 0) return <p style={{color:'#9ca3af',textAlign:'center',padding:'24px'}}>Pas encore de donnees</p>;
   const comptesParJour: any = {};
   partData.forEach(c => {
     const jour = new Date(c.cree_le).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
@@ -14,14 +14,28 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
   });
   const jours = Object.keys(comptesParJour).slice(-14);
   const max = Math.max(...jours.map(j => comptesParJour[j]));
+  const hauteurMax = 140;
   return (
-    <div style={{display:'flex',alignItems:'flex-end',gap:'8px',height:'120px',padding:'0 8px'}}>
-      {jours.map((jour, i) => (
-        <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1}}>
-          <div style={{width:'100%',background:'#f97316',borderRadius:'4px 4px 0 0',height:max > 0 ? (comptesParJour[jour] / max * 100)+'px' : '4px',minHeight:'4px'}}></div>
-          <p style={{color:'#6b7280',fontSize:'9px',marginTop:'4px',textAlign:'center'}}>{jour}</p>
-        </div>
-      ))}
+    <div style={{position:'relative'}}>
+      <div style={{display:'flex',alignItems:'flex-end',gap:'4px',height:hauteurMax+'px',borderBottom:'2px solid #f3f4f6',paddingBottom:'0'}}>
+        {jours.map((jour, i) => {
+          const val = comptesParJour[jour];
+          const h = max > 0 ? Math.max((val / max) * hauteurMax, 8) : 8;
+          return (
+            <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1,height:'100%',justifyContent:'flex-end'}}>
+              <span style={{color:'#1f2937',fontSize:'10px',fontWeight:'bold',marginBottom:'2px'}}>{val}</span>
+              <div style={{width:'70%',background:'linear-gradient(to top,#f97316,#fb923c)',borderRadius:'4px 4px 0 0',height:h+'px'}}></div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{display:'flex',gap:'4px',marginTop:'4px'}}>
+        {jours.map((jour, i) => (
+          <div key={i} style={{flex:1,textAlign:'center'}}>
+            <p style={{color:'#9ca3af',fontSize:'9px'}}>{jour}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
