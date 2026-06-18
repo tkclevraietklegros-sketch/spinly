@@ -1,8 +1,12 @@
 "use client";
+import { useState } from "react";
 
 export default function Avis() {
+  const [avisOuvert, setAvisOuvert] = useState(false);
+
   const ouvrirAvis = () => {
     window.open("https://search.google.com/local/writereview?placeid=VOTRE_ID", "_blank");
+    setAvisOuvert(true);
   };
 
   return (
@@ -14,10 +18,11 @@ export default function Avis() {
         <button onClick={ouvrirAvis} style={{width:"100%",background:"#4285f4",color:"white",fontWeight:"bold",padding:"16px",borderRadius:"16px",fontSize:"17px",border:"none",cursor:"pointer",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"center",gap:"10px"}}>
           <span>G</span> Laisser un avis Google
         </button>
-        <p style={{color:"#9ca3af",fontSize:"13px",marginBottom:"12px"}}>— ou —</p>
-        <a href="/roue" style={{display:"block",background:"#f97316",color:"white",fontWeight:"bold",padding:"16px",borderRadius:"16px",fontSize:"17px",textDecoration:"none"}}>
-          Tourner la roue !
-        </a>
+        {avisOuvert && (
+          <a href="/roue" style={{display:"block",background:"#f97316",color:"white",fontWeight:"bold",padding:"16px",borderRadius:"16px",fontSize:"17px",textDecoration:"none",marginTop:"12px"}}>
+            Tourner la roue !
+          </a>
+        )}
       </div>
     </div>
   );
