@@ -29,7 +29,7 @@ export default function Chevalet() {
         <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'20px'}}>Laissez-nous un avis Google et tentez de remporter un cadeau en 2 minutes</p>
 
         <div style={{display:'flex',justifyContent:'center',marginBottom:'20px'}}>
-          <QRCodeCanvas value='https://roue-restaurant.vercel.app' size={180} fgColor='#1f2937'/>
+          <QRCodeCanvas value='https://spinlyo.vercel.app' size={180} fgColor='#1f2937'/>
         </div>
 
         {lots.length > 0 && (

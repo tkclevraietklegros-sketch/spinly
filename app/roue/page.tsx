@@ -82,7 +82,7 @@ export default function Roue() {
   const centre = taille / 2;
   const rayon = centre - 10;
   const segments = lots.length;
-  const urlValidation = codeGagnant ? 'https://roue-restaurant.vercel.app/valider?code=' + codeGagnant : '';
+  const urlValidation = codeGagnant ? 'https://spinlyo.vercel.app/valider?code=' + codeGagnant : '';
 
   if (chargement) return (
     <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#ffedd5 0%,#fef3e2 100%)'}}>
