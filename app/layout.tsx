@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import BandeauCookie from "./components/BandeauCookie";
-
 export const metadata: Metadata = {
   title: "Roue Restaurant",
   description: "Tentez votre chance !",
 };
-
 export default function RootLayout({
   children,
 }: {
@@ -19,7 +16,6 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <BandeauCookie />
       </body>
     </html>
   );
