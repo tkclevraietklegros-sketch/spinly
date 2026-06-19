@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+import { writeFileSync } from "fs";
+
+const content = `import type { Metadata } from "next";
 import "./globals.css";
 import BandeauCookie from "./components/BandeauCookie";
 
@@ -24,3 +26,7 @@ export default function RootLayout({
     </html>
   );
 }
+`;
+
+writeFileSync("app/layout.tsx", content, "utf8");
+console.log("OK - app/layout.tsx mis a jour avec le bandeau cookie");
