@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import BandeauCookie from './components/BandeauCookie';
 export default function Home() {
   const [config, setConfig] = useState({ nom: 'Le Petit Bistrot', couleur_principale: '#f97316' });
   const [lots, setLots] = useState<any[]>([]);
@@ -17,7 +18,6 @@ export default function Home() {
   }, []);
   return (
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
-      
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
         <div style={{fontSize:'64px',marginBottom:'12px'}}>🍽️</div>
         <h1 style={{fontSize:'32px',fontWeight:'bold',color:config.couleur_principale,margin:'0'}}>{config.nom}</h1>
@@ -45,6 +45,7 @@ export default function Home() {
         </a>
         <p style={{color:'#9ca3af',fontSize:'13px',marginTop:'16px'}}>1 participation par visite - Resultat instantane</p>
       </div>
+      <BandeauCookie />
       <style>{`
         @keyframes pulse {
           0% { transform: scale(1); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
