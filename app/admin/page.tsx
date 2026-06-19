@@ -37,11 +37,11 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
           );
         })}
       </div>
-      <div style={{display:'flex',gap:'0px',marginTop:'4px',height:'32px'}}>
+      <div style={{display:'flex',gap:'0px',marginTop:'6px'}}>
         {jours.map((jour, i) => (
-          <div key={i} style={{flex:1,textAlign:'center',overflow:'hidden',position:'relative'}}>
+          <div key={i} style={{flex:1,textAlign:'center'}}>
             {afficherDate(i) && (
-              <p style={{color:'#9ca3af',fontSize:'9px',margin:0,whiteSpace:'nowrap',transform:'rotate(-45deg)',transformOrigin:'top left',marginLeft:'6px',marginTop:'4px',position:'absolute'}}>{jour}</p>
+              <p style={{color:'#9ca3af',fontSize:'9px',margin:0}}>{jour}</p>
             )}
           </div>
         ))}
