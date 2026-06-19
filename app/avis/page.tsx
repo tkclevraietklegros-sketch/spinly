@@ -55,7 +55,7 @@ export default function Avis() {
     padding:'4px'
   };
   return (
-    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
+    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px',colorScheme:'light'}}>
       <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
         <div style={{fontSize:'56px',animation:'bounce 1s infinite'}}>⭐</div>
         <h1 style={{fontSize:'30px',fontWeight:'bold',color:config.couleur_principale,margin:'0'}}>{config.nom}</h1>
