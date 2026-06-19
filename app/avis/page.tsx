@@ -49,7 +49,6 @@ export default function Avis() {
   };
   const styleLienPasser = {
     display:'block',
-    color:'#e5e7eb',
     fontSize:'11px',
     marginTop:'10px',
     textDecoration:'none',
@@ -70,10 +69,12 @@ export default function Avis() {
         {avisOuvert ? (
           <a href="/roue" style={styleBoutonRoue}>🎡 Tourner la roue !</a>
         ) : (
-          <a href="/roue" style={styleLienPasser}>(passer)</a>
+          <a href="/roue" style={styleLienPasser} className="lien-passer">(passer)</a>
         )}
       </div>
-      <style>{`
+ <style>{`
+        .lien-passer { color: #e5e7eb; }
+        @media (prefers-color-scheme: dark) { .lien-passer { color: #6b7280; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
       `}</style>
