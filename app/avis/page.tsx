@@ -26,12 +26,12 @@ export default function Avis() {
     background:'#4285f4',
     color:'white',
     fontWeight:'bold',
-    padding:'18px',
+    padding:'22px',
     borderRadius:'16px',
     border:'none',
     cursor:'pointer',
-    fontSize:'17px',
-    marginBottom:'6px',
+    fontSize:'18px',
+    marginBottom:'8px',
     boxShadow:'0 8px 24px rgba(66,133,244,0.4)',
     animation:'pulse 2s infinite'
   };
@@ -49,9 +49,9 @@ export default function Avis() {
   };
   const styleLienPasser = {
     display:'block',
-    color:'#d1d5db',
+    color:'#e5e7eb',
     fontSize:'11px',
-    marginTop:'12px',
+    marginTop:'10px',
     textDecoration:'none',
     padding:'4px'
   };
@@ -65,10 +65,8 @@ export default function Avis() {
       <div style={{background:'white',borderRadius:'32px',boxShadow:'0 20px 60px rgba(0,0,0,0.12)',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(20px)',transition:'all 0.6s ease 0.2s'}}>
         <div style={{fontSize:'52px',marginBottom:'8px'}}>🍽️</div>
         <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>Vous avez aime votre repas ?</h2>
-        <p style={{color:'#6b7280',margin:'12px 0 8px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡</p>
-        <p style={{color:'#9ca3af',fontSize:'13px',margin:'0 0 20px'}}>Ca prend 30 secondes !</p>
+        <p style={{color:'#6b7280',margin:'12px 0 20px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
         <button onClick={ouvrirAvis} style={styleBoutonGoogle}>⭐ Laisser un avis Google</button>
-        <p style={{color:'#9ca3af',fontSize:'12px',margin:'4px 0 16px'}}>Ca prend 30 secondes !</p>
         {avisOuvert ? (
           <a href="/roue" style={styleBoutonRoue}>🎡 Tourner la roue !</a>
         ) : (
