@@ -1,84 +1,136 @@
-"use client";
-import { useState, useEffect } from "react";
-import { supabase } from "../../lib/supabase";
+'use client';
+
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export default function Avis() {
-  const [peutJouer, setPeutJouer] = useState(false);
   const [avisOuvert, setAvisOuvert] = useState(false);
-  const [lienGoogle, setLienGoogle] = useState('');
-  const [config, setConfig] = useState({ couleur_principale: '#f97316' });
-  const [secondes, setSecondes] = useState(30);
+  const [config, setConfig] = useState({
+    nom: 'Le Petit Bistrot',
+    couleur_principale: '#f97316',
+    lien_google: ''
+  });
+
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const charger = async () => {
       const { data } = await supabase.from('config').select('*').single();
-      if (data) { setLienGoogle(data.lien_google); setConfig(data); }
+      if (data) setConfig(data);
     };
     charger();
     setTimeout(() => setVisible(true), 100);
   }, []);
 
-  useEffect(() => {
-    if (!avisOuvert) return;
-    const interval = setInterval(() => {
-      setSecondes(s => {
-        if (s <= 1) { clearInterval(interval); setPeutJouer(true); return 0; }
-        return s - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [avisOuvert]);
-
   const ouvrirAvis = () => {
-    window.open(lienGoogle || 'https://search.google.com/local/writereview', '_blank');
+    window.open(
+      config.lien_google ||
+      "https://search.google.com/local/writereview",
+      "_blank"
+    );
     setAvisOuvert(true);
   };
 
-  const circonference = 283;
-
   return (
-    <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px'}}>
-      
-      <div style={{textAlign:'center',marginBottom:'32px',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(-20px)',transition:'all 0.6s ease'}}>
-        <div style={{fontSize:'48px',marginBottom:'8px'}}>&#11088;</div>
-        <h1 style={{fontSize:'28px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>Votre avis compte !</h1>
-        <p style={{color:'#6b7280',marginTop:'8px',fontSize:'16px'}}>2 minutes pour gagner un cadeau</p>
+    <div style={{
+      minHeight:'100vh',
+      background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',
+      display:'flex',
+      flexDirection:'column',
+      alignItems:'center',
+      justifyContent:'center',
+      padding:'24px'
+    }}>
+
+      <div style={{
+        textAlign:'center',
+        marginBottom:'32px',
+        opacity:visible ? 1 : 0,
+        transform:visible ? 'translateY(0)' : 'translateY(-20px)',
+        transition:'all 0.6s ease'
+      }}>
+        <div style={{fontSize:'56px'}}>⭐</div>
+
+        <h1 style={{
+          fontSize:'30px',
+          fontWeight:'bold',
+          color:config.couleur_principale,
+          margin:'0'
+        }}>
+          {config.nom}
+        </h1>
+
+        <p style={{color:'#6b7280',marginTop:'8px'}}>
+          Votre avis compte ❤️
+        </p>
       </div>
 
-      <div style={{background:'white',borderRadius:'32px',boxShadow:'0 20px 60px rgba(0,0,0,0.12)',padding:'40px',maxWidth:'400px',width:'100%',textAlign:'center',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(20px)',transition:'all 0.6s ease 0.2s'}}>
-        
-        {!avisOuvert ? (
-          <div>
-            <div style={{background:'#fff7ed',borderRadius:'16px',padding:'20px',marginBottom:'28px'}}>
-              <p style={{color:'#1f2937',fontWeight:'500',lineHeight:'1.7',margin:'0'}}>
-                1. Cliquez sur le bouton ci-dessous<br/>
-                2. Laissez votre avis Google<br/>
-                3. Revenez tourner la roue et gagner !
-              </p>
-            </div>
-            <button onClick={ouvrirAvis} style={{display:'block',width:'100%',background:'#4285f4',color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',border:'none',cursor:'pointer',boxShadow:'0 8px 24px rgba(66,133,244,0.35)'}}>
-              Ouvrir Google Avis
-            </button>
-          </div>
-        ) : !peutJouer ? (
-          <div>
-            <div style={{width:'56px',height:'56px',border:'5px solid #f3f4f6',borderTop:'5px solid '+config.couleur_principale,borderRadius:'50%',animation:'spin 1s linear infinite',margin:'0 auto 24px'}}></div>
-            <p style={{color:'#1f2937',fontWeight:'600',fontSize:'16px',marginBottom:'8px'}}>Verification de votre avis...</p>
-            <p style={{color:'#9ca3af',fontSize:'14px'}}>Merci de patienter quelques instants</p>
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-          </div>
-        ) : (
-          <div>
-            <div style={{fontSize:'56px',marginBottom:'16px'}}>&#127905;</div>
-            <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>C est parti !</h2>
-            <p style={{color:'#6b7280',marginBottom:'24px'}}>La roue vous attend, bonne chance !</p>
-            <a href='/roue' style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)'}}>
-              Tourner la roue !
-            </a>
-          </div>
+      <div style={{
+        background:'white',
+        borderRadius:'32px',
+        boxShadow:'0 20px 60px rgba(0,0,0,0.12)',
+        padding:'40px',
+        maxWidth:'420px',
+        width:'100%',
+        textAlign:'center',
+        opacity:visible ? 1 : 0,
+        transform:visible ? 'translateY(0)' : 'translateY(20px)',
+        transition:'all 0.6s ease 0.2s'
+      }}>
+
+        <div style={{fontSize:'52px'}}>🍽️</div>
+
+        <h2 style={{
+          fontSize:'22px',
+          fontWeight:'bold',
+          color:'#1f2937'
+        }}>
+          Laissez un avis Google
+        </h2>
+
+        <p style={{
+          color:'#6b7280',
+          margin:'20px 0'
+        }}>
+          Débloquez votre roue 🎡
+        </p>
+
+        <button
+          onClick={ouvrirAvis}
+          style={{
+            width:'100%',
+            background:'#4285f4',
+            color:'white',
+            fontWeight:'bold',
+            padding:'16px',
+            borderRadius:'16px',
+            border:'none',
+            cursor:'pointer'
+          }}
+        >
+          ⭐ Laisser un avis Google
+        </button>
+
+        {avisOuvert && (
+          <a
+            href="/roue"
+            style={{
+              display:'block',
+              marginTop:'16px',
+              background:config.couleur_principale,
+              color:'white',
+              fontWeight:'bold',
+              padding:'18px',
+              borderRadius:'16px',
+              textDecoration:'none'
+            }}
+          >
+            🎡 Tourner la roue !
+          </a>
         )}
+
       </div>
+
     </div>
   );
 }

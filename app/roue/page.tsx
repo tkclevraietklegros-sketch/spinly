@@ -1,4 +1,6 @@
-'use client';
+import { writeFileSync } from "fs";
+
+const content = `'use client';
 import { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { supabase } from '../../lib/supabase';
@@ -16,11 +18,6 @@ function choisirLot(lots: any[]) {
     if (rand < 0) return lot;
   }
   return lots[lots.length - 1];
-}
-
-function consentementDonne() {
-  const cookie = document.cookie.split(';').find(c => c.trim().startsWith('consentement_cookie='));
-  return cookie ? cookie.includes('accepte') : false;
 }
 
 export default function Roue() {
@@ -76,12 +73,10 @@ export default function Roue() {
         const expiration = new Date(Date.now() + 60 * 60 * 1000);
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString() });
       }
-      if (consentementDonne()) {
-        const cookieExp = new Date();
-        cookieExp.setDate(cookieExp.getDate() + 7);
-        document.cookie = 'roue_joue=1; expires=' + cookieExp.toUTCString() + '; path=/';
-        setDejaJoue(true);
-      }
+      const cookieExp = new Date();
+      cookieExp.setDate(cookieExp.getDate() + 7);
+      document.cookie = 'roue_joue=1; expires=' + cookieExp.toUTCString() + '; path=/';
+      setDejaJoue(true);
       setTourne(false);
     }, 4000);
   };
@@ -109,7 +104,7 @@ export default function Roue() {
           <div style={{background:'#fff7ed',borderRadius:'12px',padding:'16px'}}>
             <p style={{color:'#f97316',fontWeight:'bold',fontSize:'14px'}}>Revenez dans 7 jours pour retenter votre chance !</p>
           </div>
-          <style>{`@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }`}</style>
+          <style>{\`@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }\`}</style>
         </div>
       ) : (
         <div style={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',maxWidth:'400px'}}>
@@ -165,3 +160,7 @@ export default function Roue() {
     </div>
   );
 }
+`;
+
+writeFileSync("app/roue/page.tsx", content, "utf8");
+console.log("OK - app/roue/page.tsx mis a jour (cookie pose sans condition)");
