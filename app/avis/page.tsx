@@ -1,6 +1,5 @@
-import { writeFileSync } from "fs";
+'use client';
 
-const code = `'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
@@ -8,8 +7,10 @@ export default function Avis() {
   const [avisOuvert, setAvisOuvert] = useState(false);
   const [config, setConfig] = useState({
     nom: 'Le Petit Bistrot',
-    couleur_principale: '#f97316'
+    couleur_principale: '#f97316',
+    lien_google: ''
   });
+
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -23,7 +24,8 @@ export default function Avis() {
 
   const ouvrirAvis = () => {
     window.open(
-      "https://search.google.com/local/writereview?placeid=ChIJEXNs5GO5kUcRT8HixXp-leY",
+      config.lien_google ||
+      "https://search.google.com/local/writereview",
       "_blank"
     );
     setAvisOuvert(true);
@@ -47,7 +49,7 @@ export default function Avis() {
         transform:visible ? 'translateY(0)' : 'translateY(-20px)',
         transition:'all 0.6s ease'
       }}>
-        <div style={{fontSize:'56px',marginBottom:'10px'}}>⭐</div>
+        <div style={{fontSize:'56px'}}>⭐</div>
 
         <h1 style={{
           fontSize:'30px',
@@ -58,11 +60,8 @@ export default function Avis() {
           {config.nom}
         </h1>
 
-        <p style={{
-          color:'#6b7280',
-          marginTop:'8px'
-        }}>
-          Votre avis nous aide à nous améliorer ❤️
+        <p style={{color:'#6b7280',marginTop:'8px'}}>
+          Votre avis compte ❤️
         </p>
       </div>
 
@@ -79,23 +78,21 @@ export default function Avis() {
         transition:'all 0.6s ease 0.2s'
       }}>
 
-        <div style={{fontSize:'52px',marginBottom:'10px'}}>🍽️</div>
+        <div style={{fontSize:'52px'}}>🍽️</div>
 
         <h2 style={{
           fontSize:'22px',
           fontWeight:'bold',
-          color:'#1f2937',
-          marginBottom:'10px'
+          color:'#1f2937'
         }}>
           Laissez un avis Google
         </h2>
 
         <p style={{
           color:'#6b7280',
-          marginBottom:'28px',
-          lineHeight:'1.6'
+          margin:'20px 0'
         }}>
-          Quelques secondes pour débloquer votre récompense 🎡
+          Débloquez votre roue 🎡
         </p>
 
         <button
@@ -107,11 +104,8 @@ export default function Avis() {
             fontWeight:'bold',
             padding:'16px',
             borderRadius:'16px',
-            fontSize:'16px',
             border:'none',
-            cursor:'pointer',
-            boxShadow:'0 8px 24px rgba(66,133,244,0.3)',
-            marginBottom:'12px'
+            cursor:'pointer'
           }}
         >
           ⭐ Laisser un avis Google
@@ -122,16 +116,13 @@ export default function Avis() {
             href="/roue"
             style={{
               display:'block',
+              marginTop:'16px',
               background:config.couleur_principale,
               color:'white',
               fontWeight:'bold',
               padding:'18px',
               borderRadius:'16px',
-              fontSize:'18px',
-              textDecoration:'none',
-              marginTop:'12px',
-              boxShadow:'0 10px 25px rgba(0,0,0,0.15)',
-              animation:'pulse 2s infinite'
+              textDecoration:'none'
             }}
           >
             🎡 Tourner la roue !
@@ -140,18 +131,6 @@ export default function Avis() {
 
       </div>
 
-      <style>{\`
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.03); }
-          100% { transform: scale(1); }
-        }
-      \`}</style>
-
     </div>
   );
 }
-`;
-
-writeFileSync('app/avis/page.tsx', code);
-console.log('OK - page avis style home');
