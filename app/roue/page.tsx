@@ -18,6 +18,11 @@ function choisirLot(lots: any[]) {
   return lots[lots.length - 1];
 }
 
+function consentementDonne() {
+  const cookie = document.cookie.split(';').find(c => c.trim().startsWith('consentement_cookie='));
+  return cookie ? cookie.includes('accepte') : false;
+}
+
 export default function Roue() {
   const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
@@ -71,10 +76,12 @@ export default function Roue() {
         const expiration = new Date(Date.now() + 60 * 60 * 1000);
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString() });
       }
-      const cookieExp = new Date();
-      cookieExp.setDate(cookieExp.getDate() + 7);
-      document.cookie = 'roue_joue=1; expires=' + cookieExp.toUTCString() + '; path=/';
-      setDejaJoue(true);
+      if (consentementDonne()) {
+        const cookieExp = new Date();
+        cookieExp.setDate(cookieExp.getDate() + 7);
+        document.cookie = 'roue_joue=1; expires=' + cookieExp.toUTCString() + '; path=/';
+        setDejaJoue(true);
+      }
       setTourne(false);
     }, 4000);
   };
