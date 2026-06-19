@@ -4,7 +4,7 @@ const content = `"use client";
 
 export default function Avis() {
   const ouvrirAvis = () => {
-    window.open("https://search.google.com/local/writereview?placeid=VOTRE_ID", "_blank");
+    window.open("https://search.google.com/local/writereview?placeid=ChIJEXNs5GO5kUcRT8HixXp-leY", "_blank");
   };
 
   return (
@@ -42,4 +42,4 @@ export default function Avis() {
 `;
 
 writeFileSync("app/avis/page.tsx", content, "utf8");
-console.log("OK - app/avis/page.tsx mis a jour");
+console.log("OK - app/avis/page.tsx mis a jour")
