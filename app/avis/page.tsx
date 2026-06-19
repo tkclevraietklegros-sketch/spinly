@@ -1,29 +1,157 @@
-"use client";
-import { useState } from "react";
+import { writeFileSync } from "fs";
+
+const code = `'use client';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 export default function Avis() {
   const [avisOuvert, setAvisOuvert] = useState(false);
+  const [config, setConfig] = useState({
+    nom: 'Le Petit Bistrot',
+    couleur_principale: '#f97316'
+  });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const charger = async () => {
+      const { data } = await supabase.from('config').select('*').single();
+      if (data) setConfig(data);
+    };
+    charger();
+    setTimeout(() => setVisible(true), 100);
+  }, []);
 
   const ouvrirAvis = () => {
-    window.open("https://search.google.com/local/writereview?placeid=ChIJEXNs5GO5kUcRT8HixXp-leY", "_blank");
+    window.open(
+      "https://search.google.com/local/writereview?placeid=ChIJEXNs5GO5kUcRT8HixXp-leY",
+      "_blank"
+    );
     setAvisOuvert(true);
   };
 
   return (
-    <div style={{minHeight:"100vh",background:"linear-gradient(to bottom, #fff7ed, #ffffff)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px"}}>
-      <div style={{background:"white",borderRadius:"24px",boxShadow:"0 10px 40px rgba(0,0,0,0.1)",padding:"40px",maxWidth:"380px",width:"100%",textAlign:"center"}}>
-        <div style={{fontSize:"48px",marginBottom:"16px"}}>⭐</div>
-        <h1 style={{fontSize:"22px",fontWeight:"bold",color:"#1f2937",marginBottom:"12px"}}>Votre avis compte pour nous !</h1>
-        <p style={{color:"#6b7280",marginBottom:"32px",lineHeight:"1.6"}}>Si vous avez apprécié votre expérience, nous serions ravis de lire votre avis Google.</p>
-        <button onClick={ouvrirAvis} style={{width:"100%",background:"#4285f4",color:"white",fontWeight:"bold",padding:"16px",borderRadius:"16px",fontSize:"17px",border:"none",cursor:"pointer",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"center",gap:"10px"}}>
-          <span>G</span> Laisser un avis Google
+    <div style={{
+      minHeight:'100vh',
+      background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',
+      display:'flex',
+      flexDirection:'column',
+      alignItems:'center',
+      justifyContent:'center',
+      padding:'24px'
+    }}>
+
+      <div style={{
+        textAlign:'center',
+        marginBottom:'32px',
+        opacity:visible ? 1 : 0,
+        transform:visible ? 'translateY(0)' : 'translateY(-20px)',
+        transition:'all 0.6s ease'
+      }}>
+        <div style={{fontSize:'56px',marginBottom:'10px'}}>⭐</div>
+
+        <h1 style={{
+          fontSize:'30px',
+          fontWeight:'bold',
+          color:config.couleur_principale,
+          margin:'0'
+        }}>
+          {config.nom}
+        </h1>
+
+        <p style={{
+          color:'#6b7280',
+          marginTop:'8px'
+        }}>
+          Votre avis nous aide à nous améliorer ❤️
+        </p>
+      </div>
+
+      <div style={{
+        background:'white',
+        borderRadius:'32px',
+        boxShadow:'0 20px 60px rgba(0,0,0,0.12)',
+        padding:'40px',
+        maxWidth:'420px',
+        width:'100%',
+        textAlign:'center',
+        opacity:visible ? 1 : 0,
+        transform:visible ? 'translateY(0)' : 'translateY(20px)',
+        transition:'all 0.6s ease 0.2s'
+      }}>
+
+        <div style={{fontSize:'52px',marginBottom:'10px'}}>🍽️</div>
+
+        <h2 style={{
+          fontSize:'22px',
+          fontWeight:'bold',
+          color:'#1f2937',
+          marginBottom:'10px'
+        }}>
+          Laissez un avis Google
+        </h2>
+
+        <p style={{
+          color:'#6b7280',
+          marginBottom:'28px',
+          lineHeight:'1.6'
+        }}>
+          Quelques secondes pour débloquer votre récompense 🎡
+        </p>
+
+        <button
+          onClick={ouvrirAvis}
+          style={{
+            width:'100%',
+            background:'#4285f4',
+            color:'white',
+            fontWeight:'bold',
+            padding:'16px',
+            borderRadius:'16px',
+            fontSize:'16px',
+            border:'none',
+            cursor:'pointer',
+            boxShadow:'0 8px 24px rgba(66,133,244,0.3)',
+            marginBottom:'12px'
+          }}
+        >
+          ⭐ Laisser un avis Google
         </button>
+
         {avisOuvert && (
-          <a href="/roue" style={{display:"block",background:"#f97316",color:"white",fontWeight:"bold",padding:"16px",borderRadius:"16px",fontSize:"17px",textDecoration:"none",marginTop:"12px"}}>
-            Tourner la roue !
+          <a
+            href="/roue"
+            style={{
+              display:'block',
+              background:config.couleur_principale,
+              color:'white',
+              fontWeight:'bold',
+              padding:'18px',
+              borderRadius:'16px',
+              fontSize:'18px',
+              textDecoration:'none',
+              marginTop:'12px',
+              boxShadow:'0 10px 25px rgba(0,0,0,0.15)',
+              animation:'pulse 2s infinite'
+            }}
+          >
+            🎡 Tourner la roue !
           </a>
         )}
+
       </div>
+
+      <style>{\`
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.03); }
+          100% { transform: scale(1); }
+        }
+      \`}</style>
+
     </div>
   );
 }
+`;
+
+writeFileSync('app/avis/page.tsx', code);
+console.log('OK - page avis style home');
