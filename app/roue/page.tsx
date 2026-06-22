@@ -152,19 +152,19 @@ export default function Roue() {
               <p style={{fontSize:'24px',color:'#f97316',fontWeight:'bold',marginBottom:'16px'}}>{resultat.label}</p>
               {modeLivraison ? (
                 <div>
+                  <div style={{display:'flex',justifyContent:'center',marginBottom:'16px'}}>
+                    <QRCodeCanvas value={urlValidation} size={160}/>
+                  </div>
                   <div style={{background:'#fff7ed',borderRadius:'12px',padding:'16px',marginBottom:'12px'}}>
                     <p style={{color:'#6b7280',fontSize:'12px',marginBottom:'4px'}}>Votre code cadeau</p>
                     <p style={{fontSize:'28px',fontWeight:'bold',color:'#f97316',letterSpacing:'6px',marginBottom:'8px'}}>{codeGagnant}</p>
                     <p style={{color:'#9ca3af',fontSize:'12px'}}>Valable 7 jours</p>
                   </div>
-                  <div style={{background:'#f0fdf4',borderRadius:'12px',padding:'16px',marginBottom:'12px'}}>
+                  <div style={{background:'#f0fdf4',borderRadius:'12px',padding:'16px'}}>
                     <p style={{fontSize:'24px',marginBottom:'4px'}}>📸</p>
                     <p style={{color:'#16a34a',fontWeight:'bold',fontSize:'14px',marginBottom:'4px'}}>Faites une capture d'ecran !</p>
                     <p style={{color:'#6b7280',fontSize:'13px'}}>Presentez cette page lors de votre prochaine visite au restaurant pour recuperer votre cadeau.</p>
                   </div>
-                  <button onClick={partager} style={{width:'100%',background:'#1f2937',color:'white',fontWeight:'bold',padding:'12px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'14px'}}>
-                    Partager ce bon cadeau
-                  </button>
                 </div>
               ) : (
                 <div>
