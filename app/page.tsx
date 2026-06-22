@@ -6,7 +6,10 @@ export default function Home() {
   const [config, setConfig] = useState({ nom: 'Le Petit Bistrot', couleur_principale: '#f97316' });
   const [lots, setLots] = useState<any[]>([]);
   const [visible, setVisible] = useState(false);
+  const [modeLivraison, setModeLivraison] = useState(false);
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setModeLivraison(params.get('mode') === 'livraison');
     const charger = async () => {
       const { data: configData } = await supabase.from('config').select('*').single();
       if (configData) setConfig(configData);
@@ -40,7 +43,7 @@ export default function Home() {
             ))}
           </div>
         )}
-       <a href={typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'livraison' ? '/avis?mode=livraison' : '/avis'} style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)',animation:'pulse 2s infinite'}}>
+      <a href={modeLivraison ? '/avis?mode=livraison' : '/avis'} style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)',animation:'pulse 2s infinite'}}>
           Jouer maintenant
         </a>
         <p style={{color:'#9ca3af',fontSize:'13px',marginTop:'16px'}}>1 participation par visite - Resultat instantane</p>
