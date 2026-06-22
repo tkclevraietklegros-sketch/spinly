@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 export default function Avis() {
   const [avisOuvert, setAvisOuvert] = useState(false);
+  const [modeLivraison, setModeLivraison] = useState(false);
   const [config, setConfig] = useState({
     nom: 'Le Petit Bistrot',
     couleur_principale: '#f97316',
@@ -10,6 +11,8 @@ export default function Avis() {
   });
   const [visible, setVisible] = useState(false);
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setModeLivraison(params.get('mode') === 'livraison');
     const charger = async () => {
       const { data } = await supabase.from('config').select('*').single();
       if (data) setConfig(data);
@@ -67,9 +70,9 @@ export default function Avis() {
         <p style={{color:'#6b7280',margin:'12px 0 20px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
         <button onClick={ouvrirAvis} style={styleBoutonGoogle}>⭐ Laisser un avis Google</button>
         {avisOuvert ? (
-          <a href={typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'livraison' ? '/roue?mode=livraison' : '/roue'} style={styleBoutonRoue}>🎡 Tourner la roue !</a>
+          <a href={modeLivraison ? '/roue?mode=livraison' : '/roue'} style={styleBoutonRoue}>🎡 Tourner la roue !</a>
         ) : (
-          <a href={typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'livraison' ? '/roue?mode=livraison' : '/roue'} style={styleLienPasser} className="lien-passer">(passer)</a>
+          <a href={modeLivraison ? '/roue?mode=livraison' : '/roue'} style={styleLienPasser} className="lien-passer">(passer)</a>
         )}
       </div>
  <style>{`
