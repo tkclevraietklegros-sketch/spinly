@@ -72,7 +72,9 @@ export default function Roue() {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         const nouveau = genererCode();
         setCodeGagnant(nouveau);
-        const duree = modeLivraison ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+        const params = new URLSearchParams(window.location.search);
+      const estLivraison = params.get('mode') === 'livraison';
+      const duree = estLivraison ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
         const expiration = new Date(Date.now() + duree);
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString() });
       }
