@@ -67,9 +67,9 @@ export default function Avis() {
         <p style={{color:'#6b7280',margin:'12px 0 20px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
         <button onClick={ouvrirAvis} style={styleBoutonGoogle}>⭐ Laisser un avis Google</button>
         {avisOuvert ? (
-          <a href="/roue" style={styleBoutonRoue}>🎡 Tourner la roue !</a>
+          <a href={typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'livraison' ? '/roue?mode=livraison' : '/roue'} style={styleBoutonRoue}>🎡 Tourner la roue !</a>
         ) : (
-          <a href="/roue" style={styleLienPasser} className="lien-passer">(passer)</a>
+          <a href={typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('mode') === 'livraison' ? '/roue?mode=livraison' : '/roue'} style={styleLienPasser} className="lien-passer">(passer)</a>
         )}
       </div>
  <style>{`
