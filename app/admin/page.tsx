@@ -288,12 +288,22 @@ export default function Admin() {
           <button onClick={async () => { await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google, mot_de_passe: config.mot_de_passe }).eq('id', config.id); alert('Parametres sauvegardes !'); }} style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}>
             Sauvegarder
           </button>
-          <div style={{marginTop:'32px',paddingTop:'24px',borderTop:'1px solid #f3f4f6'}}>
-            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>QR Code du chevalet</label>
-            <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'16px'}}>Telechargez et imprimez ce QR code a poser sur vos tables</p>
-            <button onClick={() => window.open('/chevalet', '_blank')} style={{background:'#1f2937',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}>
-              Voir et imprimer le chevalet
-            </button>
+         <div style={{marginTop:'32px',paddingTop:'24px',borderTop:'1px solid #f3f4f6'}}>
+            <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'16px',fontWeight:'bold'}}>QR Codes</label>
+            <div style={{background:'#f9fafb',borderRadius:'12px',padding:'16px',marginBottom:'12px'}}>
+              <p style={{color:'#1f2937',fontWeight:'bold',fontSize:'14px',marginBottom:'4px'}}>🍽️ QR Code Restaurant</p>
+              <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'12px'}}>A poser sur les tables — code cadeau valable 1 heure</p>
+              <button onClick={() => window.open('/chevalet', '_blank')} style={{background:'#1f2937',color:'white',fontWeight:'bold',padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',fontSize:'14px'}}>
+                Voir et imprimer le chevalet
+              </button>
+            </div>
+            <div style={{background:'#f0fdf4',borderRadius:'12px',padding:'16px'}}>
+              <p style={{color:'#1f2937',fontWeight:'bold',fontSize:'14px',marginBottom:'4px'}}>🛵 QR Code Livraison</p>
+              <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'12px'}}>A glisser dans les sacs — code cadeau valable 7 jours</p>
+              <button onClick={() => window.open('/chevalet?mode=livraison', '_blank')} style={{background:'#16a34a',color:'white',fontWeight:'bold',padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',fontSize:'14px'}}>
+                Voir et imprimer le chevalet livraison
+              </button>
+            </div>
           </div>
         </div>
       )}
