@@ -28,8 +28,12 @@ export default function Roue() {
   const [nomRestaurant, setNomRestaurant] = useState('');
   const [chargement, setChargement] = useState(true);
   const [taille, setTaille] = useState(280);
+  const [modeLivraison, setModeLivraison] = useState(false);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const estLivraison = params.get('mode') === 'livraison';
+    setModeLivraison(estLivraison);
     const cookie = document.cookie.split(';').find(c => c.trim().startsWith('roue_joue='));
     if (cookie) setDejaJoue(true);
     const chargerLots = async () => {
@@ -68,7 +72,8 @@ export default function Roue() {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         const nouveau = genererCode();
         setCodeGagnant(nouveau);
-        const expiration = new Date(Date.now() + 60 * 60 * 1000);
+        const duree = modeLivraison ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+        const expiration = new Date(Date.now() + duree);
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString() });
       }
       const cookieExp = new Date();
@@ -77,6 +82,12 @@ export default function Roue() {
       setDejaJoue(true);
       setTourne(false);
     }, 4000);
+  };
+
+  const partager = () => {
+    if (navigator.share) {
+      navigator.share({ title: 'Mon cadeau ' + nomRestaurant, text: 'J\'ai gagne : ' + resultat?.label + ' - Code : ' + codeGagnant, url: window.location.href });
+    }
   };
 
   const centre = taille / 2;
@@ -137,15 +148,35 @@ export default function Roue() {
               <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'4px'}}>Felicitations !</h2>
               <p style={{fontSize:'14px',color:'#6b7280',marginBottom:'12px'}}>{nomRestaurant} vous offre...</p>
               <p style={{fontSize:'24px',color:'#f97316',fontWeight:'bold',marginBottom:'16px'}}>{resultat.label}</p>
-              <div style={{display:'flex',justifyContent:'center',marginBottom:'16px'}}>
-                <QRCodeCanvas value={urlValidation} size={160}/>
-              </div>
-              <div style={{background:'#fff7ed',borderRadius:'12px',padding:'12px',marginBottom:'8px'}}>
-                <p style={{color:'#6b7280',fontSize:'12px',marginBottom:'4px'}}>Code de secours</p>
-                <p style={{fontSize:'28px',fontWeight:'bold',color:'#f97316',letterSpacing:'6px'}}>{codeGagnant}</p>
-              </div>
-              <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'8px'}}>Code valable 1 heure</p>
-              <p style={{color:'#6b7280',fontSize:'13px'}}>Montrez ce QR code a votre serveur</p>
+              {modeLivraison ? (
+                <div>
+                  <div style={{background:'#fff7ed',borderRadius:'12px',padding:'16px',marginBottom:'12px'}}>
+                    <p style={{color:'#6b7280',fontSize:'12px',marginBottom:'4px'}}>Votre code cadeau</p>
+                    <p style={{fontSize:'28px',fontWeight:'bold',color:'#f97316',letterSpacing:'6px',marginBottom:'8px'}}>{codeGagnant}</p>
+                    <p style={{color:'#9ca3af',fontSize:'12px'}}>Valable 7 jours</p>
+                  </div>
+                  <div style={{background:'#f0fdf4',borderRadius:'12px',padding:'16px',marginBottom:'12px'}}>
+                    <p style={{fontSize:'24px',marginBottom:'4px'}}>📸</p>
+                    <p style={{color:'#16a34a',fontWeight:'bold',fontSize:'14px',marginBottom:'4px'}}>Faites une capture d'ecran !</p>
+                    <p style={{color:'#6b7280',fontSize:'13px'}}>Presentez cette page lors de votre prochaine visite au restaurant pour recuperer votre cadeau.</p>
+                  </div>
+                  <button onClick={partager} style={{width:'100%',background:'#1f2937',color:'white',fontWeight:'bold',padding:'12px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'14px'}}>
+                    Partager ce bon cadeau
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div style={{display:'flex',justifyContent:'center',marginBottom:'16px'}}>
+                    <QRCodeCanvas value={urlValidation} size={160}/>
+                  </div>
+                  <div style={{background:'#fff7ed',borderRadius:'12px',padding:'12px',marginBottom:'8px'}}>
+                    <p style={{color:'#6b7280',fontSize:'12px',marginBottom:'4px'}}>Code de secours</p>
+                    <p style={{fontSize:'28px',fontWeight:'bold',color:'#f97316',letterSpacing:'6px'}}>{codeGagnant}</p>
+                  </div>
+                  <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'8px'}}>Code valable 1 heure</p>
+                  <p style={{color:'#6b7280',fontSize:'13px'}}>Montrez ce QR code a votre serveur</p>
+                </div>
+              )}
             </div>
           ) : (
             <div style={{background:'white',borderRadius:'24px',boxShadow:'0 10px 40px rgba(0,0,0,0.1)',padding:'32px',textAlign:'center',width:'100%'}}>
