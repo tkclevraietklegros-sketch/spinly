@@ -17,7 +17,7 @@ export default function Chevalet() {
     };
     charger();
   }, []);
-  const urlQR = modeLivraison ? 'https://spinlyo.vercel.app/roue?mode=livraison' : 'https://spinlyo.vercel.app';
+  const urlQR = modeLivraison ? 'https://spinlyo.vercel.app?mode=livraison' : 'https://spinlyo.vercel.app';
   return (
     <div style={{minHeight:'100vh',background:'#ffffff',display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'}}>
       <div style={{width:'340px',background:'white',borderRadius:'24px',boxShadow:'0 20px 60px rgba(0,0,0,0.15)',padding:'40px',textAlign:'center',border:'3px solid '+config.couleur_principale}}>
