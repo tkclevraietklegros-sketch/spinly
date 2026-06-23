@@ -66,7 +66,7 @@ export default function AdminRestaurant() {
   const router = useRouter();
 
   useEffect(() => {
-    const auth = document.cookie.split(';').find(c => c.trim().startsWith('admin_auth='));
+    const auth = document.cookie.split(';').find(c => c.trim().startsWith('admin_auth_'+slugActuel+'='));
     if (!auth) {
       const slugActuel = window.location.pathname.split('/')[1];
       router.push('/'+slugActuel+'/admin/login');
@@ -168,7 +168,7 @@ export default function AdminRestaurant() {
     <div style={{minHeight:'100vh',background:'#f9fafb',padding:'16px',maxWidth:'100%',overflowX:'hidden',boxSizing:'border-box'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'24px'}}>
         <h1 style={{fontSize:'24px',fontWeight:'bold',color:'#1f2937'}}>Dashboard {config.nom}</h1>
-        <button onClick={() => { document.cookie='admin_auth=; max-age=0'; router.push('/'+slug+'/admin/login'); }} style={{background:'#ef4444',color:'white',padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer'}}>Deconnexion</button>
+        <button onClick={() => { document.cookie='admin_auth_'+slug+'=; max-age=0'; router.push('/'+slug+'/admin/login'); }} style={{background:'#ef4444',color:'white',padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer'}}>Deconnexion</button>
       </div>
       <div style={{display:'flex',gap:'8px',marginBottom:'24px'}}>
         <button onClick={() => setOnglet('stats')} style={{padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',background:onglet==='stats'?'#f97316':'white',color:onglet==='stats'?'white':'#6b7280',fontWeight:'bold'}}>Stats</button>
