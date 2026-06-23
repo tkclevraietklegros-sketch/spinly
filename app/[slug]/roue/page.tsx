@@ -36,6 +36,8 @@ export default function Roue() {
 
   useEffect(() => {
     if (!slug) return;
+     console.log('slug:', slug);
+    const p = new URLSearchParams(window.location.search);
     const p = new URLSearchParams(window.location.search);
     const estLivraison = p.get('mode') === 'livraison';
     setModeLivraison(estLivraison);
