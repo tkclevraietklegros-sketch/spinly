@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { supabase } from '../../../lib/supabase';
 import confetti from 'canvas-confetti';
-import { useParams } from 'next/navigation';
 
 function genererCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -20,8 +19,6 @@ function choisirLot(lots: any[]) {
 }
 
 export default function Roue() {
-  const params = useParams();
-  const slug = params?.slug as string;
   const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
@@ -33,11 +30,12 @@ export default function Roue() {
   const [taille, setTaille] = useState(280);
   const [modeLivraison, setModeLivraison] = useState(false);
   const [restaurantId, setRestaurantId] = useState('');
+  const [slugState, setSlugState] = useState('');
 
   useEffect(() => {
-    const slugActuel = slug || window.location.pathname.split('/')[1];
-    if (!slugActuel) return;
-    console.log('slug:', slugActuel);
+    const slugActuel = window.location.pathname.split('/')[1];
+    if (!slugActuel) { setChargement(false); return; }
+    setSlugState(slugActuel);
     const p = new URLSearchParams(window.location.search);
     const estLivraison = p.get('mode') === 'livraison';
     setModeLivraison(estLivraison);
@@ -45,7 +43,7 @@ export default function Roue() {
     if (cookie) setDejaJoue(true);
     const chargerLots = async () => {
       const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slugActuel).single();
-      if (!restau) return;
+      if (!restau) { setChargement(false); return; }
       setRestaurantId(restau.id);
       const { data } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
       if (data) setLots(data);
@@ -61,7 +59,7 @@ export default function Roue() {
     updateTaille();
     window.addEventListener('resize', updateTaille);
     return () => window.removeEventListener('resize', updateTaille);
-  }, [slug]);
+  }, []);
 
   const tourner = async () => {
     if (tourne || dejaJoue || lots.length === 0) return;
@@ -90,7 +88,7 @@ export default function Roue() {
       }
       const cookieExp = new Date();
       cookieExp.setDate(cookieExp.getDate() + 7);
-      document.cookie = 'roue_joue_'+slug+'=1; expires=' + cookieExp.toUTCString() + '; path=/';
+      document.cookie = 'roue_joue_'+slugState+'=1; expires=' + cookieExp.toUTCString() + '; path=/';
       setDejaJoue(true);
       setTourne(false);
     }, 4000);
