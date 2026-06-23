@@ -35,6 +35,7 @@ export default function Roue() {
   const [restaurantId, setRestaurantId] = useState('');
 
   useEffect(() => {
+    if (!slug) return;
     const p = new URLSearchParams(window.location.search);
     const estLivraison = p.get('mode') === 'livraison';
     setModeLivraison(estLivraison);
