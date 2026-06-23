@@ -265,7 +265,7 @@ export default function AdminRestaurant() {
                       <span style={{background:'#fef9c3',color:'#ca8a04',padding:'4px 8px',borderRadius:'20px',fontSize:'11px'}}>Attente</span>
                     )}
                   </td>
-                  <td style={{padding:'8px 4px',color:'#6b7280',fontSize:'11px'}}>{new Date(c.cree_le).toLocaleString('fr-FR')}</td>
+                  <td style={{padding:'8px 4px',color:'#6b7280',fontSize:'11px'}}>{new Date(c.cree_le).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td>
                   <td style={{padding:'8px 4px'}}>
                     <button onClick={() => supprimerCode(c.id)} style={{padding:'6px 10px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'12px',fontWeight:'bold'}}>Suppr</button>
                   </td>
