@@ -21,7 +21,7 @@ function choisirLot(lots: any[]) {
 
 export default function Roue() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = (params?.slug as string) || window.location.pathname.split('/')[1];
   const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
