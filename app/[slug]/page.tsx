@@ -5,7 +5,7 @@ import BandeauCookie from '../components/BandeauCookie';
 import { useParams } from 'next/navigation';
 export default function Home() {
   const params = useParams();
-  const slug = slug as string;
+  const slug = params.slug as string;
   const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
   const [lots, setLots] = useState<any[]>([]);
   const [visible, setVisible] = useState(false);
