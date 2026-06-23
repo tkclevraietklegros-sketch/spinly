@@ -1,7 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
-export default function Avis({ params }: { params: { slug: string } }) {
+import { useParams } from 'next/navigation';
+export default function Avis() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [avisOuvert, setAvisOuvert] = useState(false);
   const [modeLivraison, setModeLivraison] = useState(false);
   const [config, setConfig] = useState({ nom: '', couleur_principale: '#f97316', lien_google: '' });
@@ -10,7 +13,7 @@ export default function Avis({ params }: { params: { slug: string } }) {
     const p = new URLSearchParams(window.location.search);
     setModeLivraison(p.get('mode') === 'livraison');
     const charger = async () => {
-      const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', params.slug).single();
+      const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slug).single();
       if (!restau) return;
       const { data } = await supabase.from('config').select('*').eq('restaurant_id', restau.id).single();
       if (data) setConfig(data);
@@ -68,9 +71,9 @@ export default function Avis({ params }: { params: { slug: string } }) {
         <p style={{color:'#6b7280',margin:'12px 0 20px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
         <button onClick={ouvrirAvis} style={styleBoutonGoogle}>⭐ Laisser un avis Google</button>
         {avisOuvert ? (
-          <a href={modeLivraison ? '/'+params.slug+'/roue?mode=livraison' : '/'+params.slug+'/roue'} style={styleBoutonRoue}>🎡 Tourner la roue !</a>
+          <a href={modeLivraison ? '/'+slug+'/roue?mode=livraison' : '/'+slug+'/roue'} style={styleBoutonRoue}>🎡 Tourner la roue !</a>
         ) : (
-          <a href={modeLivraison ? '/'+params.slug+'/roue?mode=livraison' : '/'+params.slug+'/roue'} style={styleLienPasser} className="lien-passer">(passer)</a>
+          <a href={modeLivraison ? '/'+slug+'/roue?mode=livraison' : '/'+slug+'/roue'} style={styleLienPasser} className="lien-passer">(passer)</a>
         )}
       </div>
       <style>{`
