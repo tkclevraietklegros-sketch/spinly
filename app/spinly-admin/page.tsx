@@ -94,12 +94,7 @@ export default function SpinlyAdmin() {
                 <button onClick={() => toggleActif(r.id, r.actif)} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:r.actif?'#dcfce7':'#fee2e2',color:r.actif?'#16a34a':'#dc2626',fontSize:'12px',fontWeight:'bold'}}>
                   {r.actif ? 'Actif' : 'Inactif'}
                 </button>
-                <button onClick={() => {
-  const exp = new Date();
-  exp.setDate(exp.getDate() + 7);
-  document.cookie = 'admin_auth_'+r.slug+'=1; expires=' + exp.toUTCString() + '; path=/';
-  window.open('/'+r.slug+'/admin', '_blank');
-}} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontSize:'12px',fontWeight:'bold'}}>
+                <button onClick={() => window.open('/spinly-admin/connect?slug='+r.slug, '_blank')} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontSize:'12px',fontWeight:'bold'}}>
   Dashboard
 </button>
               </div>
