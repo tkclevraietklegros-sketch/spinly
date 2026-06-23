@@ -2,7 +2,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import BandeauCookie from '../components/BandeauCookie';
-export default function Home({ params }: { params: { slug: string } }) {
+import { useParams } from 'next/navigation';
+export default function Home() {
+  const params = useParams();
+  const slug = slug as string;
   const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
   const [lots, setLots] = useState<any[]>([]);
   const [visible, setVisible] = useState(false);
@@ -12,7 +15,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     const params2 = new URLSearchParams(window.location.search);
     setModeLivraison(params2.get('mode') === 'livraison');
     const charger = async () => {
-      const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', params.slug).single();
+      const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slug).single();
       if (!restau) return;
       setRestaurantId(restau.id);
       const { data: configData } = await supabase.from('config').select('*').eq('restaurant_id', restau.id).single();
@@ -45,7 +48,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             ))}
           </div>
         )}
-        <a href={modeLivraison ? '/'+params.slug+'/avis?mode=livraison' : '/'+params.slug+'/avis'} style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)',animation:'pulse 2s infinite'}}>
+        <a href={modeLivraison ? '/'+slug+'/avis?mode=livraison' : '/'+slug+'/avis'} style={{display:'block',background:config.couleur_principale,color:'white',fontWeight:'bold',padding:'18px 24px',borderRadius:'16px',fontSize:'18px',textDecoration:'none',boxShadow:'0 8px 24px rgba(249,115,22,0.35)',animation:'pulse 2s infinite'}}>
           Jouer maintenant
         </a>
         <p style={{color:'#9ca3af',fontSize:'13px',marginTop:'16px'}}>1 participation par visite - Resultat instantane</p>
