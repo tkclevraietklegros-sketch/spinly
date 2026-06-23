@@ -96,6 +96,7 @@ export default function Roue() {
 
   const centre = taille / 2;
   const rayon = centre - 10;
+  const segments = lots.length;
   if (lots.length === 0 && !chargement) return (
     <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#ffedd5 0%,#fef3e2 100%)'}}>
       <p style={{color:'#6b7280'}}>Aucun lot disponible</p>
