@@ -21,7 +21,7 @@ function choisirLot(lots: any[]) {
 
 export default function Roue() {
   const params = useParams();
-  const slug = (params?.slug as string) || window.location.pathname.split('/')[1];
+  const slug = params?.slug as string;
   const [lots, setLots] = useState<any[]>([]);
   const [rotation, setRotation] = useState(0);
   const [tourne, setTourne] = useState(false);
@@ -35,8 +35,9 @@ export default function Roue() {
   const [restaurantId, setRestaurantId] = useState('');
 
   useEffect(() => {
-    if (!slug) return;
-    console.log('slug:', slug);
+    const slugActuel = slug || window.location.pathname.split('/')[1];
+    if (!slugActuel) return;
+    console.log('slug:', slugActuel);
     const p = new URLSearchParams(window.location.search);
     const estLivraison = p.get('mode') === 'livraison';
     setModeLivraison(estLivraison);
