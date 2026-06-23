@@ -66,14 +66,13 @@ export default function AdminRestaurant() {
   const router = useRouter();
 
   useEffect(() => {
+    const slugActuel = window.location.pathname.split('/')[1];
+    setSlug(slugActuel);
     const auth = document.cookie.split(';').find(c => c.trim().startsWith('admin_auth_'+slugActuel+'='));
     if (!auth) {
-      const slugActuel = window.location.pathname.split('/')[1];
       router.push('/'+slugActuel+'/admin/login');
       return;
     }
-    const slugActuel = window.location.pathname.split('/')[1];
-    setSlug(slugActuel);
     const init = async () => {
       const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slugActuel).single();
       if (!restau) return;
