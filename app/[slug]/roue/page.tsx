@@ -46,7 +46,7 @@ export default function Roue() {
       if (!restau) { setChargement(false); return; }
       setRestaurantId(restau.id);
       const { data } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
-      if (data) setLots(data);
+      if (data) { console.log('lots:', data); setLots(data); }
       const { data: configData } = await supabase.from('config').select('nom').eq('restaurant_id', restau.id).single();
       if (configData) setNomRestaurant(configData.nom);
       setChargement(false);
