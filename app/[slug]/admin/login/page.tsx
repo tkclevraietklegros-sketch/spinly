@@ -12,7 +12,7 @@ export default function LoginRestaurant() {
   useEffect(() => {
     const slugActuel = window.location.pathname.split('/')[1];
     setSlug(slugActuel);
-    const auth = document.cookie.split(';').find(c => c.trim().startsWith('admin_auth='));
+    const auth = document.cookie.split(';').find(c => c.trim().startsWith('admin_auth_'+slugActuel+'='));
     if (auth) router.push('/'+slugActuel+'/admin');
   }, []);
 
