@@ -56,7 +56,9 @@ export default function Avis() {
     fontSize:'11px',
     marginTop:'10px',
     textDecoration:'none',
-    padding:'4px'
+    padding:'4px',
+    color:'#6b7280',
+    opacity: 0.25
   };
   return (
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'24px',colorScheme:'light'}}>
@@ -77,8 +79,7 @@ export default function Avis() {
         )}
       </div>
       <style>{`
-        .lien-passer { color: #f0f0f0; }
-        @media (prefers-color-scheme: dark) { .lien-passer { color: #6b7280; } }
+        .lien-passer { opacity: 0.25; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
       `}</style>
