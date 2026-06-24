@@ -65,7 +65,7 @@ export default function Avis() {
         <h1 style={{fontSize:'30px',fontWeight:'bold',color:config.couleur_principale,margin:'0'}}>{config.nom}</h1>
         <p style={{color:'#6b7280',marginTop:'8px'}}>Votre avis compte ❤️</p>
       </div>
-      <div style={{background:'white',borderRadius:'32px',boxShadow:'0 20px 60px rgba(0,0,0,0.12)',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(20px)',transition:'all 0.6s ease 0.2s',colorScheme:'light'}}>
+      <div style={{background:'#fafafa',borderRadius:'32px',boxShadow:'0 20px 60px rgba(0,0,0,0.12)',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',opacity:visible?1:0,transform:visible?'translateY(0)':'translateY(20px)',transition:'all 0.6s ease 0.2s',colorScheme:'light'}}>
         <div style={{fontSize:'52px',marginBottom:'8px'}}>🍽️</div>
         <h2 style={{fontSize:'22px',fontWeight:'bold',color:'#1f2937',marginBottom:'8px'}}>Vous avez aime votre repas ?</h2>
         <p style={{color:'#6b7280',margin:'12px 0 20px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
@@ -77,7 +77,7 @@ export default function Avis() {
         )}
       </div>
       <style>{`
-        .lien-passer { color: #e5e7eb; }
+        .lien-passer { color: #f0f0f0; }
         @media (prefers-color-scheme: dark) { .lien-passer { color: #6b7280; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
