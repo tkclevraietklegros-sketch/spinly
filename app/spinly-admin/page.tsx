@@ -20,6 +20,8 @@ export default function SpinlyAdmin() {
   const [nouvelleCouleur, setNouvelleCouleur] = useState('#f97316');
   const [confirmation, setConfirmation] = useState('');
   const [lienCreation, setLienCreation] = useState('');
+  const [resetId, setResetId] = useState('');
+  const [resetMdp, setResetMdp] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -66,6 +68,14 @@ export default function SpinlyAdmin() {
     charger();
   };
 
+  const reinitialiserMdp = async (restaurantId: string) => {
+    if (!resetMdp) return;
+    await supabase.from('config').update({ mot_de_passe: resetMdp }).eq('restaurant_id', restaurantId);
+    setResetId('');
+    setResetMdp('');
+    alert('Mot de passe reinitialise !');
+  };
+
   if (chargement) return (
     <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#f9fafb'}}>
       <p style={{color:'#6b7280'}}>Chargement...</p>
@@ -79,7 +89,7 @@ export default function SpinlyAdmin() {
           <h1 style={{fontSize:'24px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>🎡 Spinly Admin</h1>
           <p style={{color:'#6b7280',fontSize:'14px',margin:'4px 0 0'}}>{restaurants.length} restaurant{restaurants.length > 1 ? 's' : ''}</p>
         </div>
-        <button onClick={() => { document.cookie='spinly_admin=; max-age=0'; router.push('/spinly-admin/login'); }} style={{background:'#ef4444',color:'white',padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'bold'}}>
+        <button onClick={() => { document.cookie='spinly_admin=; max-age=0; path=/'; router.push('/spinly-admin/login'); }} style={{background:'#ef4444',color:'white',padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'bold'}}>
           Deconnexion
         </button>
       </div>
@@ -93,7 +103,6 @@ export default function SpinlyAdmin() {
               <div>
                 <p style={{color:'#6b7280',fontSize:'13px',marginBottom:'4px'}}>Lien dashboard a envoyer au restaurateur :</p>
                 <p style={{color:'#1f2937',fontWeight:'bold',fontSize:'14px',background:'#f9fafb',padding:'8px',borderRadius:'8px'}}>{lienCreation}</p>
-                <p style={{color:'#6b7280',fontSize:'13px',marginTop:'4px'}}>Mot de passe : {nouveauMdp || '(defini lors de la creation)'}</p>
               </div>
             )}
           </div>
@@ -121,15 +130,29 @@ export default function SpinlyAdmin() {
                 <h3 style={{fontSize:'18px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>{r.nom}</h3>
                 <p style={{color:'#9ca3af',fontSize:'13px',margin:'2px 0 0'}}>/{r.slug}</p>
               </div>
-              <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+              <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
                 <button onClick={() => toggleActif(r.id, r.actif)} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:r.actif?'#dcfce7':'#fee2e2',color:r.actif?'#16a34a':'#dc2626',fontSize:'12px',fontWeight:'bold'}}>
                   {r.actif ? 'Actif' : 'Inactif'}
+                </button>
+                <button onClick={() => setResetId(resetId === r.id ? '' : r.id)} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f3f4f6',color:'#6b7280',fontSize:'12px',fontWeight:'bold'}}>
+                  🔑 Mdp
                 </button>
                 <button onClick={() => window.open('/spinly-admin/connect?slug='+r.slug, '_blank')} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontSize:'12px',fontWeight:'bold'}}>
                   Dashboard
                 </button>
               </div>
             </div>
+            {resetId === r.id && (
+              <div style={{background:'#fff7ed',borderRadius:'12px',padding:'12px',marginBottom:'12px',display:'flex',gap:'8px',alignItems:'center'}}>
+                <input value={resetMdp} onChange={(e) => setResetMdp(e.target.value)} placeholder='Nouveau mot de passe' style={{flex:1,padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
+                <button onClick={() => reinitialiserMdp(r.id)} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontWeight:'bold',fontSize:'13px'}}>
+                  Valider
+                </button>
+                <button onClick={() => { setResetId(''); setResetMdp(''); }} style={{padding:'8px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f3f4f6',color:'#6b7280',fontSize:'13px'}}>
+                  Annuler
+                </button>
+              </div>
+            )}
             <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'8px'}}>
               <div style={{background:'#f9fafb',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                 <p style={{color:'#6b7280',fontSize:'12px',margin:'0 0 4px'}}>Participations</p>
