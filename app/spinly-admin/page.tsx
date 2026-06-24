@@ -153,7 +153,7 @@ export default function SpinlyAdmin() {
                 </button>
               </div>
             )}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'8px'}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'8px',marginBottom:'12px'}}>
               <div style={{background:'#f9fafb',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                 <p style={{color:'#6b7280',fontSize:'12px',margin:'0 0 4px'}}>Participations</p>
                 <p style={{fontSize:'24px',fontWeight:'bold',color:'#1f2937',margin:'0'}}>{stats[r.id]?.participations || 0}</p>
@@ -162,6 +162,12 @@ export default function SpinlyAdmin() {
                 <p style={{color:'#6b7280',fontSize:'12px',margin:'0 0 4px'}}>Cadeaux utilises</p>
                 <p style={{fontSize:'24px',fontWeight:'bold',color:'#16a34a',margin:'0'}}>{stats[r.id]?.codeUtilises || 0}</p>
               </div>
+            </div>
+            <div style={{background:'#f9fafb',borderRadius:'10px',padding:'12px',display:'flex',flexDirection:'column',gap:'6px'}}>
+              <p style={{color:'#6b7280',fontSize:'11px',margin:'0',fontWeight:'bold'}}>LIENS</p>
+              <p style={{color:'#3b82f6',fontSize:'12px',margin:'0'}}>🌐 spinlyo.vercel.app/{r.slug}</p>
+              <p style={{color:'#6b7280',fontSize:'12px',margin:'0'}}>✅ spinlyo.vercel.app/{r.slug}/valider</p>
+              <p style={{color:'#9ca3af',fontSize:'12px',margin:'0'}}>🛵 spinlyo.vercel.app/{r.slug}?mode=livraison</p>
             </div>
           </div>
         ))}
