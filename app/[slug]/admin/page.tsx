@@ -320,6 +320,9 @@ export default function AdminRestaurant() {
           </div>
         </div>
       )}
+    <div style={{textAlign:'center',padding:'24px',marginTop:'16px'}}>
+        <p style={{color:'#9ca3af',fontSize:'12px'}}>🎡 Spinly — Support : topicrolic@gmail.com</p>
+      </div>
     </div>
   );
 }
