@@ -31,6 +31,11 @@ export default function Roue() {
   const [modeLivraison, setModeLivraison] = useState(false);
   const [restaurantId, setRestaurantId] = useState('');
   const [slugState, setSlugState] = useState('');
+  const [sousLots, setSousLots] = useState<any[]>([]);
+  const [rotationBonus, setRotationBonus] = useState(0);
+  const [tourneBonus, setTourneBonus] = useState(false);
+  const [resultatBonus, setResultatBonus] = useState<any>(null);
+  const [etapeBonus, setEtapeBonus] = useState(false);
 
   useEffect(() => {
     const slugActuel = window.location.pathname.split('/')[1];
@@ -74,9 +79,20 @@ export default function Roue() {
     setRotation((r) => r + deg);
     setTimeout(async () => {
       setResultat(lot);
-      const estGagnant = !lot.est_perdant;
       await supabase.from('participations').insert({ lot: lot.label, restaurant_id: restaurantId, mode: modeLivraison ? 'livraison' : 'restaurant' });
-      if (estGagnant) {
+      const cookieExp = new Date();
+      cookieExp.setDate(cookieExp.getDate() + 7);
+      document.cookie = 'roue_joue_'+slugState+'=1; expires=' + cookieExp.toUTCString() + '; path=/';
+      setDejaJoue(true);
+      setTourne(false);
+      if (lot.est_roue_bonus) {
+        const { data: sl } = await supabase.from('sous_lots').select('*').eq('lot_id', lot.id).eq('actif', true);
+        if (sl && sl.length > 0) {
+          setSousLots(sl);
+          setEtapeBonus(true);
+          setTimeout(() => tournerBonus(sl, lot), 800);
+        }
+      } else if (!lot.est_perdant) {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         const nouveau = genererCode();
         setCodeGagnant(nouveau);
@@ -84,11 +100,26 @@ export default function Roue() {
         const expiration = new Date(Date.now() + duree);
         await supabase.from('codes').insert({ code: nouveau, lot: lot.label, expire_le: expiration.toISOString(), restaurant_id: restaurantId });
       }
-      const cookieExp = new Date();
-      cookieExp.setDate(cookieExp.getDate() + 7);
-      document.cookie = 'roue_joue_'+slugState+'=1; expires=' + cookieExp.toUTCString() + '; path=/';
-      setDejaJoue(true);
-      setTourne(false);
+    }, 4000);
+  };
+
+  const tournerBonus = async (sl: any[], lotParent: any) => {
+    setTourneBonus(true);
+    const sousLot = choisirLot(sl);
+    const index = sl.indexOf(sousLot);
+    const segmentAngle = 360 / sl.length;
+    const cibleAngle = 360 - (index * segmentAngle + segmentAngle / 2);
+    const deg = 360 * 5 + cibleAngle;
+    setRotationBonus((r) => r + deg);
+    setTimeout(async () => {
+      setResultatBonus(sousLot);
+      setTourneBonus(false);
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+      const nouveau = genererCode();
+      setCodeGagnant(nouveau);
+      const duree = modeLivraison ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+      const expiration = new Date(Date.now() + duree);
+      await supabase.from('codes').insert({ code: nouveau, lot: sousLot.label, expire_le: expiration.toISOString(), restaurant_id: restaurantId });
     }, 4000);
   };
 
