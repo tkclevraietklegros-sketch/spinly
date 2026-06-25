@@ -307,9 +307,9 @@ export default function AdminRestaurant() {
           </div>
           {newEstRoueBonus && (
             <div style={{background:'#fffbeb',border:'2px solid #f59e0b',borderRadius:'12px',padding:'16px',marginBottom:'16px'}}>
-              <p style={{color:'#92400e',fontSize:'13px',margin:'0'}}>🎰 <strong>Roue
-        </div>
-      )}
+              <p style={{color:'#92400e',fontSize:'13px',margin:'0'}}>🎰 <strong>Roue bonus</strong> — Quand un client tombe sur ce lot, une 2eme roue se declenche. Ideal pour ecouler vos stocks ! Ajoutez les sous-lots apres avoir cree ce lot.</p>
+            </div>
+          )}
       {onglet === 'codes' && (
         <div style={{background:'white',borderRadius:'16px',padding:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',overflowX:'auto'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
