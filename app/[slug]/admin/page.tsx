@@ -62,7 +62,7 @@ function GraphiqueBarres({ partData }: { partData: any[] }) {
 export default function AdminRestaurant() {
   const [codes, setCodes] = useState<any[]>([]);
   const [lots, setLots] = useState<any[]>([]);
-  const [stats, setStats] = useState({ total: 0, utilises: 0, expires: 0 });
+  const [stats, setStats] = useState({ total: 0, restaurant: 0, livraison: 0, utilises: 0, expires: 0 });
   const [onglet, setOnglet] = useState('stats');
   const [periode, setPeriode] = useState('mois');
   const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
@@ -125,6 +125,8 @@ export default function AdminRestaurant() {
       setCodes(codesData);
       setStats({
         total: partData ? partData.length : 0,
+        restaurant: partData ? partData.filter(p => p.mode === 'restaurant').length : 0,
+        livraison: partData ? partData.filter(p => p.mode === 'livraison').length : 0,
         utilises: codesData.filter(c => c.utilise).length,
         expires: codesData.filter(c => c.expire_le && new Date(c.expire_le) < new Date()).length,
       });
@@ -208,10 +210,22 @@ export default function AdminRestaurant() {
             <button onClick={() => { setPeriode('mois'); charger('mois', restaurantId); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='mois'?'#1f2937':'white',color:periode==='mois'?'white':'#6b7280',fontWeight:'bold'}}>Ce mois</button>
             <button onClick={() => { setPeriode('tout'); charger('tout', restaurantId); }} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:periode==='tout'?'#1f2937':'white',color:periode==='tout'?'white':'#6b7280',fontWeight:'bold'}}>Tout</button>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px'}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px'}}>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total participations</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#1f2937'}}>{stats.total}</p>
+            </div>
+           <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Total participations</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#1f2937'}}>{stats.total}</p>
+            </div>
+            <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>🍽️ Restaurant</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#f97316'}}>{stats.restaurant}</p>
+            </div>
+            <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
+              <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>🛵 Livraison</p>
+              <p style={{fontSize:'36px',fontWeight:'bold',color:'#16a34a'}}>{stats.livraison}</p>
             </div>
             <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',textAlign:'center'}}>
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Cadeaux utilises</p>
@@ -225,7 +239,6 @@ export default function AdminRestaurant() {
               <p style={{color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Taux utilisation</p>
               <p style={{fontSize:'36px',fontWeight:'bold',color:'#f97316'}}>{stats.total > 0 ? Math.round(stats.utilises / stats.total * 100) : 0}%</p>
             </div>
-          </div>
           <div style={{background:'white',borderRadius:'16px',padding:'24px',boxShadow:'0 2px 8px rgba(0,0,0,0.05)',marginTop:'16px'}}>
             <h3 style={{fontSize:'16px',fontWeight:'bold',color:'#1f2937',marginBottom:'16px'}}>Participations par jour</h3>
             <GraphiqueBarres partData={partData} />
