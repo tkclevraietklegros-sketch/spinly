@@ -72,6 +72,12 @@ export default function AdminRestaurant() {
   const [newCouleur, setNewCouleur] = useState('#f97316');
   const [newFrequence, setNewFrequence] = useState(10);
   const [newEstPerdant, setNewEstPerdant] = useState(false);
+  const [newEstRoueBonus, setNewEstRoueBonus] = useState(false);
+  const [sousLots, setSousLots] = useState<any[]>([]);
+  const [lotBonusOuvert, setLotBonusOuvert] = useState<string|null>(null);
+  const [newSousLabel, setNewSousLabel] = useState('');
+  const [newSousCouleur, setNewSousCouleur] = useState('#8b5cf6');
+  const [newSousProba, setNewSousProba] = useState(33);
   const [restaurantId, setRestaurantId] = useState('');
   const [slug, setSlug] = useState('');
   const router = useRouter();
@@ -158,19 +164,39 @@ export default function AdminRestaurant() {
 
   const ajouterLot = async () => {
     if (!newLabel) return;
-    if (!newEstPerdant && totalProbas() + newFrequence > 100) {
+    if (!newEstPerdant && !newEstRoueBonus && totalProbas() + newFrequence > 100) {
       setConfirmation('Total depasse 100% ! Reduisez les autres lots.');
       setTimeout(() => setConfirmation(''), 3000);
       return;
     }
-    await supabase.from('lots').insert({ label: newLabel, couleur: newCouleur, probabilite: newEstPerdant ? 0 : newFrequence, actif: true, restaurant_id: restaurantId, est_perdant: newEstPerdant });
+    await supabase.from('lots').insert({ label: newLabel, couleur: newCouleur, probabilite: newEstPerdant ? 0 : newFrequence, actif: true, restaurant_id: restaurantId, est_perdant: newEstPerdant, est_roue_bonus: newEstRoueBonus });
     setNewLabel('');
     setNewCouleur('#f97316');
     setNewFrequence(10);
     setNewEstPerdant(false);
+    setNewEstRoueBonus(false);
     setConfirmation('Lot ajoute !');
     setTimeout(() => setConfirmation(''), 2000);
     charger(periode, restaurantId);
+  };
+
+  const chargerSousLots = async (lotId: string) => {
+    const { data } = await supabase.from('sous_lots').select('*').eq('lot_id', lotId);
+    if (data) setSousLots(data);
+  };
+
+  const ajouterSousLot = async (lotId: string) => {
+    if (!newSousLabel) return;
+    await supabase.from('sous_lots').insert({ label: newSousLabel, couleur: newSousCouleur, probabilite: newSousProba, actif: true, lot_id: lotId, restaurant_id: restaurantId });
+    setNewSousLabel('');
+    setNewSousCouleur('#8b5cf6');
+    setNewSousProba(33);
+    chargerSousLots(lotId);
+  };
+
+  const supprimerSousLot = async (id: string, lotId: string) => {
+    await supabase.from('sous_lots').delete().eq('id', id);
+    chargerSousLots(lotId);
   };
 
   const supprimerCode = async (id: string) => {
@@ -253,7 +279,7 @@ export default function AdminRestaurant() {
           <div style={{display:'flex',flexWrap:'wrap',gap:'8px',padding:'16px',background:'#f9fafb',borderRadius:'12px',marginBottom:'16px',alignItems:'center'}}>
             <input value={newLabel} onChange={(e) => setNewLabel(e.target.value)} placeholder='Nom du lot' style={{flex:1,minWidth:'120px',padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
             <input type='color' value={newCouleur} onChange={(e) => setNewCouleur(e.target.value)} style={{width:'40px',height:'36px',borderRadius:'8px',border:'1px solid #e5e7eb',cursor:'pointer'}}/>
-            {!newEstPerdant && (
+            {!newEstPerdant && !newEstRoueBonus && (
               <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
                 <select value={OPTIONS_FREQUENCE.find(o => o.probabilite === newFrequence) ? newFrequence : 'custom'} onChange={(e) => { if (e.target.value !== 'custom') setNewFrequence(parseInt(e.target.value)); }} style={{padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px',background:'white'}}>
                   {OPTIONS_FREQUENCE.map(o => (
@@ -270,39 +296,18 @@ export default function AdminRestaurant() {
               </div>
             )}
             <label style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#6b7280',cursor:'pointer'}}>
-              <input type='checkbox' checked={newEstPerdant} onChange={(e) => setNewEstPerdant(e.target.checked)}/>
+              <input type='checkbox' checked={newEstPerdant} onChange={(e) => { setNewEstPerdant(e.target.checked); if(e.target.checked) setNewEstRoueBonus(false); }}/>
               Lot perdant
+            </label>
+            <label style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#d97706',cursor:'pointer',fontWeight:'bold'}}>
+              <input type='checkbox' checked={newEstRoueBonus} onChange={(e) => { setNewEstRoueBonus(e.target.checked); if(e.target.checked) setNewEstPerdant(false); }}/>
+              🎰 Roue bonus
             </label>
             <button onClick={ajouterLot} style={{padding:'8px 16px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontWeight:'bold',fontSize:'14px'}}>Ajouter</button>
           </div>
-          {lots.map((lot) => (
-            <div key={lot.id} style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:'8px',padding:'12px',borderBottom:'1px solid #f3f4f6',background: lot.est_perdant ? '#fafafa' : 'white'}}>
-              <div style={{width:'16px',height:'16px',borderRadius:'50%',background:lot.couleur,flexShrink:0}}></div>
-              <input defaultValue={lot.label} onBlur={(e) => modifierLabel(lot.id, e.target.value)} style={{flex:1,padding:'8px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px'}}/>
-              {lot.est_perdant ? (
-                <span style={{color:'#9ca3af',fontSize:'13px',fontStyle:'italic'}}>Lot perdant</span>
-              ) : (
-                <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                  <select value={OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) ? lot.probabilite : 'custom'} onChange={(e) => { if (e.target.value !== 'custom') modifierProba(lot.id, parseInt(e.target.value)); }} style={{padding:'6px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'12px',background:'white'}}>
-                    {OPTIONS_FREQUENCE.map(o => (
-                      <option key={o.probabilite} value={o.probabilite}>{o.label}</option>
-                    ))}
-                    <option value='custom'>Personnaliser...</option>
-                  </select>
-                  {!OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) && (
-                    <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
-                      <span style={{color:'#6b7280',fontSize:'12px'}}>1 sur</span>
-                      <input type='number' min='1' max='100' defaultValue={Math.round(100/lot.probabilite)} onBlur={(e) => modifierProba(lot.id, Math.round(100/parseInt(e.target.value)))} style={{width:'50px',padding:'6px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'12px',textAlign:'center'}}/>
-                    </div>
-                  )}
-                </div>
-              )}
-              <button onClick={() => toggleActif(lot.id, lot.actif)} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:lot.actif?'#dcfce7':'#fee2e2',color:lot.actif?'#16a34a':'#dc2626',fontSize:'13px',fontWeight:'bold'}}>
-                {lot.actif ? 'Actif' : 'Inactif'}
-              </button>
-              <button onClick={async () => { if (!confirm('Supprimer ce lot ?')) return; await supabase.from('lots').delete().eq('id', lot.id); charger(periode, restaurantId); }} style={{padding:'6px 10px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f3f4f6',color:'#6b7280',fontSize:'13px',fontWeight:'bold'}}>Suppr</button>
-            </div>
-          ))}
+          {newEstRoueBonus && (
+            <div style={{background:'#fffbeb',border:'2px solid #f59e0b',borderRadius:'12px',padding:'16px',marginBottom:'16px'}}>
+              <p style={{color:'#92400e',fontSize:'13px',margin:'0'}}>🎰 <strong>Roue
         </div>
       )}
       {onglet === 'codes' && (
