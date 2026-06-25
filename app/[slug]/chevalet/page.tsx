@@ -18,7 +18,7 @@ export default function ChevaletSlug() {
       const { data: configData } = await supabase.from('config').select('*').eq('restaurant_id', restau.id).single();
       if (configData) setConfig(configData);
       const { data: lotsData } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
-      if (lotsData) setLots(lotsData.filter(l => !l.label.toLowerCase().includes('tentez')));
+      if (lotsData) setLots(lotsData.filter(l => !l.est_perdant));
     };
     charger();
   }, []);
