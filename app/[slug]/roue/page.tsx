@@ -74,7 +74,7 @@ export default function Roue() {
     setRotation((r) => r + deg);
     setTimeout(async () => {
       setResultat(lot);
-      const estGagnant = !lot.label.toLowerCase().includes('tentez');
+      const estGagnant = !lot.est_perdant;
       await supabase.from('participations').insert({ lot: lot.label, restaurant_id: restaurantId });
       if (estGagnant) {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
