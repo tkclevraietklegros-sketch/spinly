@@ -390,7 +390,7 @@ export default function AdminRestaurant() {
                     <div key={sl.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px',background:'white',borderRadius:'8px',marginBottom:'6px'}}>
                       <div style={{width:'12px',height:'12px',borderRadius:'50%',background:sl.couleur,flexShrink:0}}></div>
                       <span style={{flex:1,fontSize:'14px',color:'#1f2937'}}>{sl.label}</span>
-                      <span style={{fontSize:'12px',color:'#d97706'}}>{OPTIONS_FREQUENCE.find(o => o.probabilite === sl.probabilite)?.label || '1 sur '+Math.round(100/sl.probabilite)}</span>
+                      <span style={{fontSize:'12px',color:'#d97706'}}>{OPTIONS_FREQUENCE.find(o => o.probabilite === sl.probabilite)?.label || '1 sur '+Math.round(100/sl.probabilite)} — {sl.probabilite}%</span>
                       <button onClick={() => supprimerSousLot(sl.id, lot.id)} style={{padding:'4px 8px',borderRadius:'6px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'12px'}}>Suppr</button>
                     </div>
                   ))}
