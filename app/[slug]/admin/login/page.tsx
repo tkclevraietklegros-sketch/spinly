@@ -27,6 +27,7 @@ export default function LoginRestaurant() {
     const exp = new Date();
     exp.setDate(exp.getDate() + 7);
     document.cookie = 'admin_auth_'+slug+'=1; expires=' + exp.toUTCString() + '; path=/';
+    await supabase.from('config').update({ dernier_login: new Date().toISOString() }).eq('restaurant_id', restau.id);
     router.push('/'+slug+'/admin');
   };
 
