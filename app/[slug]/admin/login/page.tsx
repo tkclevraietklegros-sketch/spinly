@@ -17,17 +17,16 @@ export default function LoginRestaurant() {
   }, []);
 
   const seConnecter = async () => {
-    const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slug).single();
-    if (!restau) { setErreur('Restaurant introuvable'); return; }
-    const { data: configData } = await supabase.from('config').select('mot_de_passe').eq('restaurant_id', restau.id).single();
-    if (!configData || configData.mot_de_passe !== motDePasse) {
-      setErreur('Mot de passe incorrect');
-      return;
-    }
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, motDePasse }),
+    });
+    const data = await res.json();
+    if (!data.succes) { setErreur(data.erreur); return; }
     const exp = new Date();
     exp.setDate(exp.getDate() + 7);
     document.cookie = 'admin_auth_'+slug+'=1; expires=' + exp.toUTCString() + '; path=/';
-    await supabase.from('config').update({ dernier_login: new Date().toISOString() }).eq('restaurant_id', restau.id);
     router.push('/'+slug+'/admin');
   };
 
