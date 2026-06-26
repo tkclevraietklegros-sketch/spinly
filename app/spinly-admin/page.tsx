@@ -33,6 +33,13 @@ export default function SpinlyAdmin() {
     const { data: restaus } = await supabase.from('restaurants').select('*').order('cree_le', { ascending: false });
     if (!restaus) return;
     setRestaurants(restaus);
+    const statsMap: any = {};
+    for (const r of restaus) {
+      const { count: participations } = await supabase.from('participations').select('*', { count: 'exact', head: true }).eq('restaurant_id', r.id);
+      const { count: codes } = await supabase.from('codes').select('*', { count: 'exact', head: true }).eq('restaurant_id', r.id).eq('utilise', true);
+      const { data: configData } = await supabase.from('config').select('dernier_login').eq('restaurant_id', r.id).single();
+      statsMap[r.id] = { participations: participations || 0, codeUtilises: codes || 0, dernierLogin: configData?.dernier_login || null };
+    }
     setStats(statsMap);
     setChargement(false);
   };
