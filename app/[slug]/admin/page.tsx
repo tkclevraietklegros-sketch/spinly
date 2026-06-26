@@ -283,10 +283,10 @@ export default function AdminRestaurant() {
             <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
               <p style={{color:'#6b7280',fontSize:'13px',margin:'0'}}>Nombre de cases "Pas de chance" sur la roue :</p>
               <select value={config.nb_segments_perdants || 1} onChange={async (e) => { const val = parseInt(e.target.value); setConfig({...config, nb_segments_perdants: val}); await supabase.from('config').update({ nb_segments_perdants: val }).eq('id', config.id); setConfirmation('Segments mis a jour !'); setTimeout(() => setConfirmation(''), 2000); }} style={{padding:'6px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px',background:'white'}}>
-                <option value={1}>1 segment ({probaRestante()}% chacun)</option>
-                <option value={2}>2 segments ({Math.floor(probaRestante()/2)}% chacun)</option>
-                <option value={3}>3 segments ({Math.floor(probaRestante()/3)}% chacun)</option>
-                <option value={4}>4 segments ({Math.floor(probaRestante()/4)}% chacun)</option>
+                <option value={1}>1 case perdante ({probaRestante()}% de perdre)</option>
+                <option value={2}>2 cases perdantes ({Math.floor(probaRestante()/2)}% chacune)</option>
+                <option value={3}>3 cases perdantes ({Math.floor(probaRestante()/3)}% chacune)</option>
+                <option value={4}>4 cases perdantes ({Math.floor(probaRestante()/4)}% chacune)</option>
               </select>
             </div>
           </div>
