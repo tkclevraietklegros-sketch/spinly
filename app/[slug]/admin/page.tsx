@@ -337,6 +337,7 @@ export default function AdminRestaurant() {
                       ))}
                       <option value='custom'>Personnaliser...</option>
                     </select>
+                    <span style={{color:'#d97706',fontSize:'12px',fontWeight:'bold'}}>{lot.probabilite}%</span>
                     {!OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) && (
                       <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
                         <span style={{color:'#6b7280',fontSize:'12px'}}>1 sur</span>
@@ -352,6 +353,7 @@ export default function AdminRestaurant() {
                       ))}
                       <option value='custom'>Personnaliser...</option>
                     </select>
+                    <span style={{color:'#f97316',fontSize:'12px',fontWeight:'bold'}}>{lot.probabilite}%</span>
                     {!OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) && (
                       <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
                         <span style={{color:'#6b7280',fontSize:'12px'}}>1 sur</span>
