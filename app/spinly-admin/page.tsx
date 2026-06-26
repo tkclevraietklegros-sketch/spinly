@@ -139,7 +139,13 @@ export default function SpinlyAdmin() {
                 <button onClick={() => window.open('/spinly-admin/connect?slug='+r.slug, '_blank')} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontSize:'12px',fontWeight:'bold'}}>
                   Dashboard
                 </button>
-                <button onClick={async () => { if (!confirm('Supprimer '+r.nom+' ? Cette action est irreversible.')) return; if (!confirm('CONFIRMATION FINALE — Toutes les donnees (lots, codes, participations) seront supprimees. Continuer ?')) return; await supabase.from('participations').delete().eq('restaurant_id', r.id); await supabase.from('codes').delete().eq('restaurant_id', r.id); await supabase.from('sous_lots').delete().eq('restaurant_id', r.id); await supabase.from('lots').delete().eq('restaurant_id', r.id); await supabase.from('config').delete().eq('restaurant_id', r.id); await supabase.from('restaurants').delete().eq('id', r.id); charger(); }} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'12px',fontWeight:'bold'}}>
+                <button onClick={async () => { if (!confirm('Supprimer '+r.nom+' ? Cette action est irreversible.')) return; if (!confirm('CONFIRMATION FINALE — Toutes les donnees (lots, codes, participations) seront supprimees. Continuer ?')) return; const { error: e1 } = await supabase.from('participations').delete().eq('restaurant_id', r.id);
+const { error: e2 } = await supabase.from('codes').delete().eq('restaurant_id', r.id);
+const { error: e3 } = await supabase.from('sous_lots').delete().eq('restaurant_id', r.id);
+const { error: e4 } = await supabase.from('lots').delete().eq('restaurant_id', r.id);
+const { error: e5 } = await supabase.from('config').delete().eq('restaurant_id', r.id);
+const { error: e6 } = await supabase.from('restaurants').delete().eq('id', r.id);
+alert(JSON.stringify({e1,e2,e3,e4,e5,e6})); await supabase.from('codes').delete().eq('restaurant_id', r.id); await supabase.from('sous_lots').delete().eq('restaurant_id', r.id); await supabase.from('lots').delete().eq('restaurant_id', r.id); await supabase.from('config').delete().eq('restaurant_id', r.id); await supabase.from('restaurants').delete().eq('id', r.id); charger(); }} style={{padding:'6px 12px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#fee2e2',color:'#dc2626',fontSize:'12px',fontWeight:'bold'}}>
                   🗑️ Suppr
                 </button>
               </div>
