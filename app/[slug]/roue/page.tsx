@@ -143,7 +143,7 @@ export default function Roue() {
       const duree = modeLivraison ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
       const expiration = new Date(Date.now() + duree);
       await supabase.from('codes').insert({ code: nouveau, lot: sousLot.label, expire_le: expiration.toISOString(), restaurant_id: restaurantId });
-    }, 4000);
+    }, 6000);
   };
 
   const centre = taille / 2;
