@@ -7,7 +7,6 @@ const LOTS_DEFAUT = [
   { label: 'Cafe offert', couleur: '#f97316', probabilite: 15 },
   { label: 'Dessert offert', couleur: '#8b5cf6', probabilite: 10 },
   { label: 'Reduction 10%', couleur: '#3b82f6', probabilite: 20 },
-  { label: 'Tentez votre chance', couleur: '#6b7280', probabilite: 55 },
 ];
 
 export default function SpinlyAdmin() {
@@ -48,7 +47,7 @@ export default function SpinlyAdmin() {
     if (!nouveauNom || !nouveauSlug || !nouveauMdp) return;
     const { data: restau } = await supabase.from('restaurants').insert({ nom: nouveauNom, slug: nouveauSlug, actif: true }).select().single();
     if (!restau) return;
-    await supabase.from('config').insert({ nom: nouveauNom, couleur_principale: nouvelleCouleur, mot_de_passe: nouveauMdp, restaurant_id: restau.id });
+    await supabase.from('config').insert({ nom: nouveauNom, couleur_principale: nouvelleCouleur, mot_de_passe: nouveauMdp, restaurant_id: restau.id, nb_segments_perdants: 1 });
     for (const lot of LOTS_DEFAUT) {
       await supabase.from('lots').insert({ ...lot, actif: true, restaurant_id: restau.id });
     }
@@ -116,7 +115,7 @@ export default function SpinlyAdmin() {
           <input type='color' value={nouvelleCouleur} onChange={(e) => setNouvelleCouleur(e.target.value)} style={{width:'40px',height:'36px',borderRadius:'8px',border:'1px solid #e5e7eb',cursor:'pointer'}}/>
           <p style={{color:'#6b7280',fontSize:'13px',margin:'0'}}>Couleur principale du restaurant</p>
         </div>
-        <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'12px'}}>4 lots par defaut seront crees automatiquement (Cafe, Dessert, Reduction 10%, Tentez votre chance)</p>
+        <p style={{color:'#9ca3af',fontSize:'12px',marginBottom:'12px'}}>3 lots gagnants par defaut seront crees automatiquement (Cafe, Dessert, Reduction 10%). Les cases perdantes sont generees automatiquement.</p>
         <button onClick={ajouterRestaurant} style={{padding:'10px 24px',borderRadius:'8px',border:'none',cursor:'pointer',background:'#f97316',color:'white',fontWeight:'bold',fontSize:'14px'}}>
           Ajouter et configurer
         </button>
