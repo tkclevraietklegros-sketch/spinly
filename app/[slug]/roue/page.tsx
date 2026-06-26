@@ -66,7 +66,12 @@ export default function Roue() {
           est_perdant: true,
           est_roue_bonus: false,
         }));
-        setLots([...lotsGagnants, ...segmentsPerdants]);
+        const tousLots = [...lotsGagnants, ...segmentsPerdants];
+        for (let i = tousLots.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [tousLots[i], tousLots[j]] = [tousLots[j], tousLots[i]];
+        }
+        setLots(tousLots);
       } else if (data) {
         setLots(data.filter((l: any) => !l.est_perdant));
       }
