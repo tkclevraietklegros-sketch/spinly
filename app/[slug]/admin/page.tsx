@@ -280,7 +280,7 @@ export default function AdminRestaurant() {
           <div style={{background:'#f9fafb',borderRadius:'12px',padding:'12px',marginBottom:'16px'}}>
             <p style={{color:'#6b7280',fontSize:'13px',margin:'0 0 4px'}}>Chance de gagner un cadeau</p>
             <p style={{fontSize:'22px',fontWeight:'bold',color: totalProbas() > 100 ? '#dc2626' : '#f97316',margin:'0 4px'}}>{totalProbas()}% <span style={{fontSize:'13px',color:'#9ca3af',fontWeight:'normal'}}>({probaRestante()}% pour "Pas de chance")</span></p>
-            <p style={{fontSize:'13px',color:'#6b7280',margin:'0 0 8px'}}>soit environ {totalProbas() > 0 ? Math.round(100/totalProbas()) : '?'} client sur {totalProbas() > 0 ? Math.round(100/totalProbas()) : '?'} gagne un cadeau</p>
+            <p style={{fontSize:'13px',color:'#6b7280',margin:'0 0 8px'}}>soit environ 1 client sur {totalProbas() > 0 ? Math.round(100/totalProbas()) : '?'} gagne un cadeau</p>
             <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
               <p style={{color:'#6b7280',fontSize:'13px',margin:'0'}}>Nombre de cases "Pas de chance" sur la roue :</p>
               <select value={config.nb_segments_perdants || 1} onChange={async (e) => { const val = parseInt(e.target.value); setConfig({...config, nb_segments_perdants: val}); await supabase.from('config').update({ nb_segments_perdants: val }).eq('id', config.id); setConfirmation('Segments mis a jour !'); setTimeout(() => setConfirmation(''), 2000); }} style={{padding:'6px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'14px',background:'white'}}>
