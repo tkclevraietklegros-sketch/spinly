@@ -51,7 +51,25 @@ export default function Roue() {
       if (!restau) { setChargement(false); return; }
       setRestaurantId(restau.id);
       const { data } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
-      if (data) { console.log('lots:', data); setLots(data); }
+      const { data: configData2 } = await supabase.from('config').select('nb_segments_perdants').eq('restaurant_id', restau.id).single();
+      if (data && configData2) {
+        const nbPerdants = configData2.nb_segments_perdants || 1;
+        const lotsGagnants = data.filter((l: any) => !l.est_perdant);
+        const totalGagnants = lotsGagnants.reduce((acc: number, l: any) => acc + l.probabilite, 0);
+        const probaRestante = Math.max(0, 100 - totalGagnants);
+        const probaParPerdant = Math.floor(probaRestante / nbPerdants);
+        const segmentsPerdants = Array.from({ length: nbPerdants }, (_, i) => ({
+          id: 'perdant-'+i,
+          label: 'Pas de chance !',
+          couleur: '#9ca3af',
+          probabilite: probaParPerdant,
+          est_perdant: true,
+          est_roue_bonus: false,
+        }));
+        setLots([...lotsGagnants, ...segmentsPerdants]);
+      } else if (data) {
+        setLots(data.filter((l: any) => !l.est_perdant));
+      }
       const { data: configData } = await supabase.from('config').select('nom').eq('restaurant_id', restau.id).single();
       if (configData) setNomRestaurant(configData.nom);
       setChargement(false);
