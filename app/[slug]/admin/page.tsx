@@ -334,7 +334,20 @@ export default function AdminRestaurant() {
                 {lot.est_perdant ? (
                   <span style={{color:'#9ca3af',fontSize:'13px',fontStyle:'italic'}}>Lot perdant</span>
                 ) : lot.est_roue_bonus ? (
-                  <span style={{color:'#d97706',fontSize:'13px',fontWeight:'bold'}}>Roue bonus</span>
+                  <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
+                    <select value={OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) ? lot.probabilite : 'custom'} onChange={(e) => { if (e.target.value !== 'custom') modifierProba(lot.id, parseInt(e.target.value)); }} style={{padding:'6px',borderRadius:'8px',border:'1px solid #f59e0b',fontSize:'12px',background:'white'}}>
+                      {OPTIONS_FREQUENCE.map(o => (
+                        <option key={o.probabilite} value={o.probabilite}>{o.label}</option>
+                      ))}
+                      <option value='custom'>Personnaliser...</option>
+                    </select>
+                    {!OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) && (
+                      <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
+                        <span style={{color:'#6b7280',fontSize:'12px'}}>1 sur</span>
+                        <input type='number' min='1' max='100' defaultValue={Math.round(100/lot.probabilite)} onBlur={(e) => modifierProba(lot.id, Math.round(100/parseInt(e.target.value)))} style={{width:'50px',padding:'6px',borderRadius:'8px',border:'1px solid #f59e0b',fontSize:'12px',textAlign:'center'}}/>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                     <select value={OPTIONS_FREQUENCE.find(o => o.probabilite === lot.probabilite) ? lot.probabilite : 'custom'} onChange={(e) => { if (e.target.value !== 'custom') modifierProba(lot.id, parseInt(e.target.value)); }} style={{padding:'6px',borderRadius:'8px',border:'1px solid #e5e7eb',fontSize:'12px',background:'white'}}>
