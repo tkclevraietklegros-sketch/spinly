@@ -310,10 +310,6 @@ export default function AdminRestaurant() {
                 )}
               </div>
             )}
-            <label style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#6b7280',cursor:'pointer'}}>
-              <input type='checkbox' checked={newEstPerdant} onChange={(e) => { setNewEstPerdant(e.target.checked); if(e.target.checked) setNewEstRoueBonus(false); }}/>
-              Lot perdant
-            </label>
             <label style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#d97706',cursor:'pointer',fontWeight:'bold'}}>
               <input type='checkbox' checked={newEstRoueBonus} onChange={(e) => { setNewEstRoueBonus(e.target.checked); if(e.target.checked) setNewEstPerdant(false); }}/>
               🎰 Roue bonus
