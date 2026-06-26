@@ -178,7 +178,7 @@ export default function Roue() {
         </div>
       ) : (
         <div style={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',maxWidth:'400px'}}>
-          <div style={{position:'relative',width:taille,height:taille,marginBottom:'24px'}}>
+          <div style={{position:'relative',width:taille,height:taille,marginBottom:'24px',display:resultat && resultat.est_roue_bonus ? 'none' : 'block'}}>
             <svg width={taille} height={taille} style={{transform:'rotate('+rotation+'deg)',transition:tourne?'transform 4s cubic-bezier(0.17,0.67,0.12,0.99)':'none',borderRadius:'50%',boxShadow:'0 10px 40px rgba(0,0,0,0.2)'}}>
               {lots.map((lot, i) => {
                 const angle = (2 * Math.PI) / segments;
