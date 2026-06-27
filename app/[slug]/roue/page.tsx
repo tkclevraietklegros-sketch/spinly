@@ -5,6 +5,37 @@ import { supabase } from '../../../lib/supabase';
 import confetti from 'canvas-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
 
+function Etoiles() {
+  const etoiles = Array.from({ length: 60 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    taille: Math.random() * 2.5 + 0.5,
+    duree: Math.random() * 3 + 2,
+    delai: Math.random() * 4,
+  }));
+  return (
+    <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:0}}>
+      {etoiles.map(e => (
+        <motion.div
+          key={e.id}
+          style={{
+            position:'absolute',
+            left:e.x+'%',
+            top:e.y+'%',
+            width:e.taille+'px',
+            height:e.taille+'px',
+            borderRadius:'50%',
+            background:'white',
+          }}
+          animate={{opacity:[0,1,0]}}
+          transition={{duration:e.duree,repeat:Infinity,delay:e.delai,ease:'easeInOut'}}
+        />
+      ))}
+    </div>
+  );
+}
+
 function genererCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
@@ -197,6 +228,7 @@ export default function Roue() {
       position: 'relative',
       overflow: 'hidden',
     }}>
+      <Etoiles />
       <div style={{position:'absolute',top:'-100px',left:'-100px',width:'400px',height:'400px',background:'radial-gradient(circle,rgba(249,115,22,0.08) 0%,transparent 70%)',pointerEvents:'none'}}/>
       <div style={{position:'absolute',bottom:'-100px',right:'-100px',width:'400px',height:'400px',background:'radial-gradient(circle,rgba(139,92,246,0.06) 0%,transparent 70%)',pointerEvents:'none'}}/>
 
