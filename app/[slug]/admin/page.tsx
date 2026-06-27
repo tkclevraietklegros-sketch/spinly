@@ -127,7 +127,10 @@ export default function AdminRestaurant() {
     if (partData) setPartData(partData);
     const { data: lotsData } = await supabase.from('lots').select('*').eq('restaurant_id', rid).order('probabilite', { ascending: false });
     const { data: configData } = await supabase.from('config').select('*').eq('restaurant_id', rid).single();
-    if (configData) setConfig(configData);
+    if (configData) {
+      const { mot_de_passe, ...configSansMdp } = configData;
+      setConfig(configSansMdp);
+    }
     if (codesData) {
       setCodes(codesData);
       setStats({
@@ -455,7 +458,22 @@ export default function AdminRestaurant() {
           </div>
           <div style={{marginBottom:'20px'}}>
             <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Mot de passe admin</label>
-            <input type='password' value={config.mot_de_passe || ''} onChange={(e) => setConfig({...config, mot_de_passe: e.target.value})} placeholder='Nouveau mot de passe' style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'14px',boxSizing:'border-box'}}/>
+            {!config.changeMdp ? (
+              <button onClick={() => setConfig({...config, changeMdp: true})} style={{background:'#f3f4f6',color:'#1f2937',padding:'10px 20px',borderRadius:'10px',border:'none',cursor:'pointer',fontSize:'14px',fontWeight:'bold'}}>
+                🔑 Changer mon mot de passe
+              </button>
+            ) : (
+              <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                <input type='password' autoComplete='new-password' value={config.nouveau_mdp || ''} onChange={(e) => setConfig({...config, nouveau_mdp: e.target.value})} placeholder='Nouveau mot de passe' style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'14px',boxSizing:'border-box'}}/>
+                <input type='password' autoComplete='new-password' value={config.confirmer_mdp || ''} onChange={(e) => setConfig({...config, confirmer_mdp: e.target.value})} placeholder='Confirmer le mot de passe' style={{width:'100%',padding:'12px',borderRadius:'10px',border:'1px solid #e5e7eb',fontSize:'14px',boxSizing:'border-box'}}/>
+                {config.nouveau_mdp && config.confirmer_mdp && config.nouveau_mdp !== config.confirmer_mdp && (
+                  <p style={{color:'#dc2626',fontSize:'13px',margin:'0'}}>Les mots de passe ne correspondent pas</p>
+                )}
+                <button onClick={() => setConfig({...config, changeMdp: false, nouveau_mdp: '', confirmer_mdp: ''})} style={{background:'#f3f4f6',color:'#6b7280',padding:'8px',borderRadius:'8px',border:'none',cursor:'pointer',fontSize:'13px'}}>
+                  Annuler
+                </button>
+              </div>
+            )}
           </div>
           <div style={{marginBottom:'24px'}}>
             <label style={{display:'block',color:'#6b7280',fontSize:'14px',marginBottom:'8px'}}>Couleur principale</label>
@@ -464,7 +482,15 @@ export default function AdminRestaurant() {
               <p style={{color:'#6b7280',fontSize:'13px'}}>Couleur des boutons et textes importants sur le site client</p>
             </div>
           </div>
-          <button onClick={async () => { await supabase.from('config').update({ nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google, mot_de_passe: config.mot_de_passe }).eq('id', config.id); alert('Parametres sauvegardes !'); }} style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}>
+          <button onClick={async () => {
+            const updates: any = { nom: config.nom, couleur_principale: config.couleur_principale, lien_google: config.lien_google };
+            if (config.nouveau_mdp && config.nouveau_mdp === config.confirmer_mdp) {
+              const bcrypt = await import('bcryptjs');
+              updates.mot_de_passe = await bcrypt.hash(config.nouveau_mdp, 10);
+            }
+            await supabase.from('config').update(updates).eq('id', config.id);
+            alert('Parametres sauvegardes !');
+          }} style={{background:'#f97316',color:'white',fontWeight:'bold',padding:'12px 24px',borderRadius:'12px',border:'none',cursor:'pointer',fontSize:'16px'}}>
             Sauvegarder
           </button>
           <div style={{marginTop:'32px',paddingTop:'24px',borderTop:'1px solid #f3f4f6'}}>
