@@ -6,28 +6,24 @@ import confetti from 'canvas-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function Etoiles() {
-  const etoiles = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    taille: Math.random() * 2.5 + 0.5,
-    duree: Math.random() * 3 + 2,
-    delai: Math.random() * 4,
-  }));
+  const [etoiles, setEtoiles] = useState<any[]>([]);
+  useEffect(() => {
+    setEtoiles(Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      taille: Math.random() * 2.5 + 0.5,
+      duree: Math.random() * 3 + 2,
+      delai: Math.random() * 4,
+    })));
+  }, []);
+  if (etoiles.length === 0) return null;
   return (
     <div style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:0}}>
       {etoiles.map(e => (
         <motion.div
           key={e.id}
-          style={{
-            position:'absolute',
-            left:e.x+'%',
-            top:e.y+'%',
-            width:e.taille+'px',
-            height:e.taille+'px',
-            borderRadius:'50%',
-            background:'white',
-          }}
+          style={{position:'absolute',left:e.x+'%',top:e.y+'%',width:e.taille+'px',height:e.taille+'px',borderRadius:'50%',background:'white'}}
           animate={{opacity:[0,1,0]}}
           transition={{duration:e.duree,repeat:Infinity,delay:e.delai,ease:'easeInOut'}}
         />
