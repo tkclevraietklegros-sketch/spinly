@@ -30,7 +30,6 @@ function Etoiles() {
             height:e.taille+'px',
             borderRadius:'50%',
             background:'white',
-            boxShadow:`0 0 ${e.taille*3}px ${e.taille}px rgba(255,255,255,0.8)`
           }}
           animate={{opacity:[0,0.3,1,0.3,0],scale:[0.8,1.2,1,1.2,0.8]}}
           transition={{duration:e.duree,repeat:Infinity,delay:e.delai,ease:'easeInOut'}}
