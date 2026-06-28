@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import PageTransition from "./components/PageTransition";
+
 export const metadata: Metadata = {
-  title: "Roue Restaurant",
+  title: "Spinly",
   description: "Tentez votre chance !",
 };
+
 export default function RootLayout({
   children,
 }: {
@@ -15,7 +18,9 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico"/>
       </head>
       <body>
-        {children}
+        <PageTransition>
+          {children}
+        </PageTransition>
       </body>
     </html>
   );
