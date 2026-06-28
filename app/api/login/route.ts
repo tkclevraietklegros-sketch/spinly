@@ -7,8 +7,21 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+const tentatives: Record<string, { count: number; lastAttempt: number }> = {};
+
 export async function POST(req: NextRequest) {
   const { slug, motDePasse } = await req.json();
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  const cle = ip + '_' + slug;
+  const maintenant = Date.now();
+  if (!tentatives[cle]) tentatives[cle] = { count: 0, lastAttempt: maintenant };
+  if (maintenant - tentatives[cle].lastAttempt > 15 * 60 * 1000) {
+    tentatives[cle] = { count: 0, lastAttempt: maintenant };
+  }
+  if (tentatives[cle].count >= 5) {
+    return NextResponse.json({ succes: false, erreur: 'Trop de tentatives. Attendez 15 minutes.' });
+  }
+  tentatives[cle].lastAttempt = maintenant;
   const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slug).single();
   if (!restau) return NextResponse.json({ succes: false, erreur: 'Restaurant introuvable' });
   const { data: configData } = await supabase.from('config').select('mot_de_passe').eq('restaurant_id', restau.id).single();
@@ -24,7 +37,11 @@ export async function POST(req: NextRequest) {
       await supabase.from('config').update({ mot_de_passe: hash }).eq('restaurant_id', restau.id);
     }
   }
-  if (!valide) return NextResponse.json({ succes: false, erreur: 'Mot de passe incorrect' });
+  if (!valide) {
+    tentatives[cle].count++;
+    return NextResponse.json({ succes: false, erreur: 'Mot de passe incorrect. Tentative '+tentatives[cle].count+'/5' });
+  }
+  tentatives[cle] = { count: 0, lastAttempt: maintenant };
   await supabase.from('config').update({ dernier_login: new Date().toISOString() }).eq('restaurant_id', restau.id);
   return NextResponse.json({ succes: true, restaurantId: restau.id });
 }
