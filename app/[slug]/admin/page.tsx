@@ -400,13 +400,7 @@ export default function AdminRestaurant() {
               )}
             </div>
 
-            <div style={{marginBottom:'20px'}}>
-              <label style={{display:'block',color:'rgba(255,255,255,0.4)',fontSize:'13px',marginBottom:'6px'}}>Couleur principale</label>
-              <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-                <input type='color' value={config.couleur_principale} onChange={(e)=>setConfig({...config,couleur_principale:e.target.value})} style={{width:'56px',height:'40px',borderRadius:'10px',border:'1px solid rgba(255,255,255,0.15)',cursor:'pointer',background:'transparent'}}/>
-                <p style={{color:'rgba(255,255,255,0.3)',fontSize:'13px',margin:'0'}}>Couleur des boutons sur le site client</p>
-              </div>
-            </div>
+            
 
             <motion.button whileTap={{scale:0.97}} onClick={async()=>{
               const updates:any={nom:config.nom,couleur_principale:config.couleur_principale,lien_google:config.lien_google};
