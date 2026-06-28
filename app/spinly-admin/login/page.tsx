@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-const MOT_DE_PASSE_SPINLY = 'spinly2024';
+const MOT_DE_PASSE_SPINLY = process.env.NEXT_PUBLIC_SPINLY_ADMIN_PASSWORD || 'spinly2024';
 
 export default function SpinlyLogin() {
   const [mdp, setMdp] = useState('');
