@@ -78,7 +78,7 @@ export default function Avis() {
       <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:0.6,delay:0.2}} style={{background:'rgba(255,255,255,0.06)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'32px',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',position:'relative',zIndex:1}}>
         <div style={{fontSize:'52px',marginBottom:'12px'}}>🍽️</div>
         <h2 style={{fontSize:'22px',fontWeight:'800',color:'white',marginBottom:'8px'}}>Vous avez aime votre repas ?</h2>
-        <p style={{color:'rgba(255,255,255,0.4)',margin:'12px 0 24px',lineHeight:'1.6'}}>Laissez un avis et debloquez la roue 🎡 — ca prend 30 secondes !</p>
+                <p style={{color:'rgba(255,255,255,0.4)',margin:'12px 0 24px',lineHeight:'1.6'}}>Votre avis aide beaucoup le restaurant — ca prend 30 secondes !</p>
 
         <motion.button
           onClick={ouvrirAvis}
@@ -103,12 +103,12 @@ export default function Avis() {
             🎡 Tourner la roue !
           </motion.a>
         ) : (
-          <a href={modeLivraison ? '/'+slug+'/roue?mode=livraison' : '/'+slug+'/roue'} className="lien-passer" style={{display:'block',fontSize:'11px',marginTop:'8px',textDecoration:'none',padding:'4px',color:'rgba(255,255,255,0.3)',opacity:0.25}}>
-            (passer)
+               <a href={modeLivraison ? '/'+slug+'/roue?mode=livraison' : '/'+slug+'/roue'} className="lien-passer" style={{display:'block',fontSize:'11px',marginTop:'16px',textDecoration:'none',padding:'6px',color:'rgba(255,255,255,0.35)'}}>
+            Passer
           </a>
         )}
       </motion.div>
-      <style>{`.lien-passer { opacity: 0.25; } @media (prefers-color-scheme: dark) { .lien-passer { color: rgba(255,255,255,0.3); } }`}</style>
+            <style>{`.lien-passer { opacity: 1; }`}</style>
     </div>
   );
 }
