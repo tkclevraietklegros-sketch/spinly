@@ -78,11 +78,14 @@ export default function Roue() {
       const { data: restau } = await supabase.from('restaurants').select('id').eq('slug', slugActuel).single();
       if (!restau) { setChargement(false); return; }
       setRestaurantId(restau.id);
-      const { data } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
+            const { data } = await supabase.from('lots').select('*').eq('actif', true).eq('restaurant_id', restau.id);
       const { data: configData2 } = await supabase.from('config').select('nb_segments_perdants').eq('restaurant_id', restau.id).single();
+      const { data: sousLotsActifs } = await supabase.from('sous_lots').select('lot_id').eq('restaurant_id', restau.id).eq('actif', true);
+      const idsBonusPrets = new Set((sousLotsActifs || []).map((s: any) => s.lot_id));
+      const lotJouable = (l: any) => !l.est_perdant && (!l.est_roue_bonus || idsBonusPrets.has(l.id));
       if (data && configData2) {
         const nbPerdants = configData2.nb_segments_perdants || 1;
-        const lotsGagnants = data.filter((l: any) => !l.est_perdant);
+        const lotsGagnants = data.filter(lotJouable);
         const totalGagnants = lotsGagnants.reduce((acc: number, l: any) => acc + l.probabilite, 0);
         const probaRestante = Math.max(0, 100 - totalGagnants);
         const probaParPerdant = Math.floor(probaRestante / nbPerdants);
@@ -101,7 +104,7 @@ export default function Roue() {
         }
         setLots(tousLots);
       } else if (data) {
-        setLots(data.filter((l: any) => !l.est_perdant));
+                setLots(data.filter(lotJouable));
       }
       const { data: configData } = await supabase.from('config').select('nom').eq('restaurant_id', restau.id).single();
       if (configData) setNomRestaurant(configData.nom);
