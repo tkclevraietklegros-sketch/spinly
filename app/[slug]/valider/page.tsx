@@ -19,7 +19,7 @@ export default function Valider() {
       if (error || !data) { setStatut('invalide'); return; }
       if (data.utilise) { setStatut('deja_utilise'); return; }
       if (data.expire_le && Date.now() > new Date(data.expire_le).getTime()) { setStatut('expire'); return; }
-      await supabase.from('codes').update({ utilise: true }).eq('code', code);
+            await supabase.from('codes').update({ utilise: true }).eq('id', data.id).eq('utilise', false);
       setLot(data.lot);
       setStatut('valide');
     };
