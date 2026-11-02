@@ -55,7 +55,7 @@ function GraphiqueArea({ partData }: { partData: any[] }) {
 export default function AdminRestaurant() {
   const [codes, setCodes] = useState<any[]>([]);
   const [lots, setLots] = useState<any[]>([]);
-  const [stats, setStats] = useState({ total: 0, restaurant: 0, livraison: 0, utilises: 0, expires: 0 });
+    const [stats, setStats] = useState({ total: 0, restaurant: 0, livraison: 0, utilises: 0, expires: 0, generes: 0 });
   const [onglet, setOnglet] = useState('stats');
   const [periode, setPeriode] = useState('mois');
   const [config, setConfig] = useState<any>({ nom: '', couleur_principale: '#f97316' });
@@ -94,7 +94,21 @@ export default function AdminRestaurant() {
     let query = supabase.from('codes').select('*').eq('restaurant_id', rid).order('cree_le', { ascending: false });
     if (p === 'semaine') { const d = new Date(); d.setDate(d.getDate()-7); query = query.gte('cree_le', d.toISOString()); }
     else if (p === 'mois') { const d = new Date(); d.setMonth(d.getMonth()-1); query = query.gte('cree_le', d.toISOString()); }
-    const { data: codesData } = await query.limit(50);
+        const { data: codesData } = await query.limit(50);
+    const debutPeriode = (() => {
+      if (p === 'semaine') { const d = new Date(); d.setDate(d.getDate()-7); return d.toISOString(); }
+      if (p === 'mois') { const d = new Date(); d.setMonth(d.getMonth()-1); return d.toISOString(); }
+      return null;
+    })();
+    const compter = async (filtre: (q: any) => any) => {
+      let q: any = supabase.from('codes').select('*', { count: 'exact', head: true }).eq('restaurant_id', rid);
+      if (debutPeriode) q = q.gte('cree_le', debutPeriode);
+      const { count } = await filtre(q);
+      return count || 0;
+    };
+    const nbGeneres = await compter(q => q);
+    const nbUtilises = await compter(q => q.eq('utilise', true));
+    const nbExpires = await compter(q => q.eq('utilise', false).lt('expire_le', new Date().toISOString()));
     let partQuery = supabase.from('participations').select('*').eq('restaurant_id', rid);
     if (p === 'semaine') { const d = new Date(); d.setDate(d.getDate()-7); partQuery = partQuery.gte('cree_le', d.toISOString()); }
     else if (p === 'mois') { const d = new Date(); d.setMonth(d.getMonth()-1); partQuery = partQuery.gte('cree_le', d.toISOString()); }
@@ -105,7 +119,7 @@ export default function AdminRestaurant() {
     if (configData) { const { mot_de_passe, ...rest } = configData; setConfig(rest); }
     if (codesData) {
       setCodes(codesData);
-      setStats({ total: partData?.length || 0, restaurant: partData?.filter(p => p.mode==='restaurant').length || 0, livraison: partData?.filter(p => p.mode==='livraison').length || 0, utilises: codesData.filter(c => c.utilise).length, expires: codesData.filter(c => c.expire_le && new Date(c.expire_le) < new Date()).length });
+           setStats({ total: partData?.length || 0, restaurant: partData?.filter(p => p.mode==='restaurant').length || 0, livraison: partData?.filter(p => p.mode==='livraison').length || 0, utilises: nbUtilises, expires: nbExpires, generes: nbGeneres });
     }
     if (lotsData) setLots(lotsData);
   };
@@ -197,7 +211,7 @@ export default function AdminRestaurant() {
                 { label:'🛵 Livraison', value:stats.livraison, color:'#4ade80' },
                 { label:'Cadeaux', value:stats.utilises, color:'#4ade80' },
                 { label:'Expires', value:stats.expires, color:'#f87171' },
-                { label:'Taux', value:(stats.total > 0 ? Math.round(stats.utilises/stats.total*100) : 0)+'%', color:'#f97316' },
+                               { label:'Taux', value:(stats.generes > 0 ? Math.round(stats.utilises/stats.generes*100) : 0)+'%', color:'#f97316' },
               ].map((s, i) => (
                 <motion.div key={i} initial={{opacity:0,scale:0.9}} animate={{opacity:1,scale:1}} transition={{delay:i*0.05}} style={cardStyle}>
                   <p style={{color:'rgba(255,255,255,0.4)',fontSize:'12px',margin:'0 0 6px'}}>{s.label}</p>
