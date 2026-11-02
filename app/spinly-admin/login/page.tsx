@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-const MOT_DE_PASSE_SPINLY = process.env.NEXT_PUBLIC_SPINLY_ADMIN_PASSWORD || 'spinly2024';
 
 export default function SpinlyLogin() {
   const [mdp, setMdp] = useState('');
@@ -16,20 +15,26 @@ export default function SpinlyLogin() {
     if (auth) router.push('/spinly-admin');
   }, []);
 
-  const valider = () => {
+  const valider = async () => {
     setChargement(true);
-    setTimeout(() => {
-      if (mdp === MOT_DE_PASSE_SPINLY) {
+    try {
+      const res = await fetch('/api/spinly-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ motDePasse: mdp }),
+      });
+      const data = await res.json();
+      if (data.succes) {
         const exp = new Date();
         exp.setDate(exp.getDate() + 30);
         document.cookie = 'spinly_admin=1; expires=' + exp.toUTCString() + '; path=/';
         router.push('/spinly-admin');
-      } else {
-        setErreur(true);
-        setMdp('');
-        setChargement(false);
+        return;
       }
-    }, 600);
+    } catch (e) {}
+    setErreur(true);
+    setMdp('');
+    setChargement(false);
   };
 
   return (
