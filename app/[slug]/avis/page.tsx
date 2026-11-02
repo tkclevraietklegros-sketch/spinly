@@ -77,8 +77,8 @@ export default function Avis() {
 
       <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:0.6,delay:0.2}} style={{background:'rgba(255,255,255,0.06)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'32px',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',position:'relative',zIndex:1}}>
         <div style={{fontSize:'52px',marginBottom:'12px'}}>🍽️</div>
-        <h2 style={{fontSize:'22px',fontWeight:'800',color:'white',marginBottom:'8px'}}>Vous avez aime votre repas ?</h2>
-                <p style={{color:'rgba(255,255,255,0.4)',margin:'12px 0 24px',lineHeight:'1.6'}}>Votre avis aide beaucoup le restaurant — ca prend 30 secondes !</p>
+        <h2 style={{fontSize:'22px',fontWeight:'800',color:'white',marginBottom:'8px'}}>Vous avez aimé votre repas&nbsp;?</h2>
+                <p style={{color:'rgba(255,255,255,0.4)',margin:'12px 0 24px',lineHeight:'1.6'}}>Votre avis aide beaucoup le restaurant — ça prend 30&nbsp;secondes&nbsp;!</p>
 
         <motion.button
           onClick={ouvrirAvis}
