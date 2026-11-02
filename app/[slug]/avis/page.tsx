@@ -70,9 +70,9 @@ export default function Avis() {
       <div style={{position:'absolute',bottom:'-100px',right:'-100px',width:'400px',height:'400px',background:'radial-gradient(circle,rgba(249,115,22,0.06) 0%,transparent 70%)',pointerEvents:'none'}}/>
 
       <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:0.6}} style={{textAlign:'center',marginBottom:'32px',position:'relative',zIndex:1}}>
-        <motion.div animate={{y:[0,-8,0]}} transition={{duration:2,repeat:Infinity,ease:'easeInOut'}} style={{fontSize:'56px',marginBottom:'12px'}}>⭐</motion.div>
+        
         <h1 style={{fontSize:'30px',fontWeight:'800',color:'white',margin:'0',letterSpacing:'-0.3px'}}>{config.nom}</h1>
-        <p style={{color:'rgba(255,255,255,0.4)',marginTop:'8px'}}>Votre avis compte ❤️</p>
+        <p style={{color:'rgba(255,255,255,0.4)',marginTop:'8px'}}>Votre avis compte</p>
       </motion.div>
 
       <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:0.6,delay:0.2}} style={{background:'rgba(255,255,255,0.06)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'32px',padding:'40px',maxWidth:'420px',width:'100%',textAlign:'center',position:'relative',zIndex:1}}>
@@ -100,7 +100,7 @@ export default function Avis() {
             whileTap={{scale:0.97}}
             style={{display:'block',background:'linear-gradient(135deg,#f97316,#ea580c)',color:'white',fontWeight:'800',padding:'18px',borderRadius:'18px',textDecoration:'none',fontSize:'18px',boxShadow:'0 8px 24px rgba(249,115,22,0.4)'}}
           >
-            🎡 Tourner la roue !
+             Tourner la roue !
           </motion.a>
         ) : (
                <a href={modeLivraison ? '/'+slug+'/roue?mode=livraison' : '/'+slug+'/roue'} className="lien-passer" style={{display:'block',fontSize:'11px',marginTop:'16px',textDecoration:'none',padding:'6px',color:'rgba(255,255,255,0.35)'}}>

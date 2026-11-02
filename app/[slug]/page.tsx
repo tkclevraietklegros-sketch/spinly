@@ -75,13 +75,7 @@ export default function Home() {
         transition={{duration:0.7}}
         style={{textAlign:'center',marginBottom:'32px',position:'relative',zIndex:1}}
       >
-        <motion.div
-          animate={{rotate:[0,10,-10,0]}}
-          transition={{duration:3,repeat:Infinity,ease:'easeInOut'}}
-          style={{fontSize:'72px',marginBottom:'12px',display:'block'}}
-        >
-          🍽️
-        </motion.div>
+        
         <h1 style={{fontSize:'36px',fontWeight:'800',color:'white',margin:'0',letterSpacing:'-0.5px'}}>{config.nom}</h1>
         <p style={{color:'rgba(255,255,255,0.4)',marginTop:'8px',fontSize:'16px'}}>Merci de votre visite !</p>
       </motion.div>
@@ -103,13 +97,7 @@ export default function Home() {
           zIndex: 1,
         }}
       >
-        <motion.div
-          animate={{rotate:360}}
-          transition={{duration:20,repeat:Infinity,ease:'linear'}}
-          style={{fontSize:'64px',marginBottom:'16px',display:'block'}}
-        >
-          🎡
-        </motion.div>
+        
         <h2 style={{fontSize:'26px',fontWeight:'800',color:'white',marginBottom:'8px',letterSpacing:'-0.3px'}}>Tentez votre chance !</h2>
         <p style={{color:'rgba(255,255,255,0.4)',marginBottom:'28px',lineHeight:'1.6',fontSize:'15px'}}>Tournez la roue et gagnez un cadeau !</p>
 
@@ -161,7 +149,7 @@ export default function Home() {
             letterSpacing: '0.3px',
           }}
         >
-          Jouer maintenant 🎰
+          Jouer maintenant
         </motion.a>
         <p style={{color:'rgba(255,255,255,0.25)',fontSize:'12px',marginTop:'16px'}}>1 participation par visite · Resultat instantane</p>
       </motion.div>
